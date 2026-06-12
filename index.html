@@ -3,309 +3,468 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>WC 2026 · Prediction League · RBNA IT</title>
+<title>WC 2026 · RBNA IT Command Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root {
   --bg:      #080C17;
   --surface: #111827;
   --raised:  #1A2235;
-  --border:  #1E2D47;
-  --border2: #3A2030;
-  --teal:    #FF3A4A;
-  --teal-d:  rgba(255,58,74,0.10);
-  --teal-m:  rgba(255,58,74,0.20);
+  --border:  #243354;
+  --border2: #2E1F2A;
+  --red:     #FF3A4A;
+  --red-d:   rgba(255,58,74,0.10);
+  --red-m:   rgba(255,58,74,0.20);
   --gold:    #FFD166;
   --gold-d:  rgba(255,209,102,0.12);
-  --red:     #FF8C00;
+  --green:   #22C55E;
+  --green-d: rgba(34,197,94,0.10);
+  --amber:   #FF8C00;
+  --blue:    #3B82F6;
+  --blue-d:  rgba(59,130,246,0.10);
   --text:    #E2EAF8;
-  --muted:   #4A5F80;
-  --sub:     #8A9BBF;
+  --muted:   #6B7FA3;
+  --sub:     #A8B8D4;
   --mono:    'JetBrains Mono', monospace;
   --sans:    'Inter', system-ui, sans-serif;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--sans);
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 24px 16px 48px;
-}
-#app {
-  width: 100%;
-  max-width: 860px;
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;margin:0;padding:0;}
+#page-wrap{display:flex;flex-direction:column;align-items:center;width:100%;min-height:100vh;padding-bottom:60px;}
+#app{width:100%;max-width:960px;padding:0 12px;}
+.ticker-outer{width:100%;align-self:stretch;}
+
+/* ── Live ticker ── */
+.ticker-wrap{background:var(--surface);border-bottom:0.5px solid var(--border);width:100%;overflow:hidden;height:32px;display:flex;align-items:center;}
+.ticker-label{background:var(--red);color:#fff;font-size:10px;font-weight:700;letter-spacing:0.1em;padding:0 10px;height:100%;display:flex;align-items:center;flex-shrink:0;text-transform:uppercase;}
+.ticker-inner{display:flex;align-items:center;overflow:hidden;flex:1;}
+.ticker-track{display:flex;gap:0;animation:ticker 40s linear infinite;white-space:nowrap;}
+.ticker-item{font-size:11px;color:var(--text);padding:0 20px;border-right:0.5px solid var(--border);display:flex;align-items:center;gap:8px;height:32px;}
+.ticker-score{font-family:var(--mono);font-weight:500;color:var(--text);}
+.ticker-live{color:var(--green);font-weight:600;font-size:9px;letter-spacing:0.06em;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* ── Header ── */
-.hdr {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 0 14px;gap:8px;}
+.hdr-left{display:flex;align-items:center;gap:10px;min-width:0;}
+.rb-logo{width:36px;height:36px;flex-shrink:0;}
+.hdr-title{font-size:16px;font-weight:700;color:var(--text);letter-spacing:-0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hdr-sub{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-top:2px;}
+.hdr-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.pill{display:flex;align-items:center;gap:5px;border-radius:20px;padding:5px 10px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap;}
+.pill-live{background:rgba(34,197,94,0.12);border:0.5px solid rgba(34,197,94,0.3);color:var(--green);}
+.pill-dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:pulse 1.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.admin-btn{background:transparent;border:0.5px solid var(--border);border-radius:8px;padding:6px 10px;font-size:13px;color:var(--muted);cursor:pointer;font-family:var(--sans);transition:all 0.15s;line-height:1;}
+.admin-btn:hover{border-color:var(--border2);color:var(--sub);}
+@media(max-width:480px){
+  .hdr{padding:12px 0 10px;}
+  .rb-logo{width:30px;height:30px;}
+  .hdr-title{font-size:14px;}
+  .hdr-sub{display:none;}
+  .pill-text{display:none;}
+  .pill{padding:5px 8px;}
 }
-.hdr-left { display: flex; align-items: center; gap: 12px; }
-.rb-logo { width: 36px; height: 36px; flex-shrink: 0; }
-.hdr-title { font-size: 17px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
-.hdr-sub { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
-.live-pill {
-  display: flex; align-items: center; gap: 6px;
-  background: rgba(255,140,0,0.15); border: 0.5px solid rgba(255,140,0,0.35);
-  border-radius: 20px; padding: 5px 12px;
-  font-size: 11px; font-weight: 500; color: var(--red);
-  text-transform: uppercase; letter-spacing: 0.08em;
-}
-.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); animation: pulse 1.4s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
 /* ── Stats bar ── */
-.stats {
-  display: grid; grid-template-columns: repeat(3,1fr);
-  background: var(--surface); border: 0.5px solid var(--border);
-  border-radius: 12px; overflow: hidden; margin-bottom: 16px;
+.stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border:0.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;}
+.stat{padding:10px 8px;text-align:center;border-right:0.5px solid var(--border);}
+.stat:last-child{border-right:none;}
+.stat-val{font-size:18px;font-weight:700;color:var(--red);font-family:var(--mono);letter-spacing:-0.02em;}
+.stat-val.gold{color:var(--gold);}
+.stat-val.green{color:var(--green);}
+.stat-lbl{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:3px;}
+@media(max-width:480px){
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .stat:nth-child(2){border-right:none;}
+  .stat:nth-child(3){border-top:0.5px solid var(--border);}
+  .stat:nth-child(4){border-top:0.5px solid var(--border);}
+  .stat-val{font-size:20px;}
+  .stat-lbl{font-size:9px;}
 }
-.stat { padding: 14px 16px; text-align: center; border-right: 0.5px solid var(--border); }
-.stat:last-child { border-right: none; }
-.stat-val { font-size: 22px; font-weight: 600; color: var(--teal); font-family: var(--mono); letter-spacing: -0.02em; }
-.stat-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px; }
 
 /* ── Tabs ── */
-.tabs {
-  display: flex; background: var(--surface);
-  border: 0.5px solid var(--border); border-radius: 10px;
-  padding: 4px; gap: 2px; margin-bottom: 20px;
-}
-.tab {
-  flex: 1; padding: 9px 8px; font-size: 12px; font-weight: 500;
-  color: var(--muted); text-align: center; cursor: pointer;
-  border-radius: 7px; transition: all 0.15s; letter-spacing: 0.02em;
-  border: none; background: transparent; font-family: var(--sans);
-}
-.tab:hover:not(.active) { color: var(--text); background: var(--raised); }
-.tab.active { background: var(--raised); color: var(--teal); border: 0.5px solid var(--border2); }
-
-/* ── Two-col layout ── */
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
-@media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+.tabs{display:flex;background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:3px;gap:2px;margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex:1;min-width:56px;padding:8px 6px;font-size:10px;font-weight:500;color:var(--muted);text-align:center;cursor:pointer;border-radius:7px;transition:all 0.15s;letter-spacing:0.03em;text-transform:uppercase;border:none;background:transparent;font-family:var(--sans);white-space:nowrap;}
+.tab:hover:not(.active){color:var(--text);background:var(--raised);}
+.tab.active{background:var(--raised);color:var(--red);border:0.5px solid var(--border2);}
+@media(max-width:400px){.tab{font-size:9px;padding:8px 4px;min-width:44px;}}
 
 /* ── Card ── */
-.card {
-  background: var(--surface); border: 0.5px solid var(--border);
-  border-radius: 12px; overflow: hidden;
-}
-.card-hdr {
-  padding: 12px 16px; border-bottom: 0.5px solid var(--border);
-  font-size: 11px; font-weight: 500; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 0.08em;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.card-body { padding: 16px; }
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;}
+.card-hdr{padding:10px 14px;border-bottom:0.5px solid var(--border);font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;display:flex;align-items:center;justify-content:space-between;}
+.card-hdr-accent{color:var(--red);}
+.card-body{padding:14px;}
 
-/* ── Input ── */
-label.field-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; display: block; margin-bottom: 6px; }
-.rb-input {
-  width: 100%; background: var(--raised); border: 0.5px solid var(--border2);
-  border-radius: 8px; padding: 10px 14px; color: var(--text);
-  font-size: 14px; outline: none; font-family: var(--sans);
-}
-.rb-input:focus { border-color: var(--teal); }
-.rb-input::placeholder { color: var(--muted); }
+/* ── Today / Fixtures ── */
+.fixtures-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:520px){.fixtures-grid{grid-template-columns:1fr;}}
+.fixture-card{background:var(--raised);border:0.5px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;}
+.fixture-card.live{border-color:rgba(34,197,94,0.4);background:rgba(34,197,94,0.05);}
+.fixture-card.ft{border-color:var(--border);opacity:0.75;}
+.fixture-top{display:flex;align-items:center;justify-content:space-between;}
+.fixture-group{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;}
+.fixture-status{font-size:10px;font-weight:600;letter-spacing:0.05em;}
+.fixture-status.live{color:var(--green);}
+.fixture-status.ft{color:var(--muted);}
+.fixture-status.pre{color:var(--amber);}
+.fixture-teams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;}
+.fixture-team{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:500;color:var(--text);}
+.fixture-team.right{flex-direction:row-reverse;text-align:right;}
+.fixture-flag{font-size:18px;flex-shrink:0;}
+.fixture-score{font-size:20px;font-weight:700;color:var(--text);font-family:var(--mono);text-align:center;min-width:36px;}
+.fixture-score.live{color:var(--green);}
+.fixture-time{font-size:12px;color:var(--muted);text-align:center;font-family:var(--mono);}
+.fixture-venue{font-size:10px;color:var(--muted);text-align:center;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
-/* ── Rank slots ── */
-.slots { display: grid; grid-template-columns: repeat(4,1fr); gap: 5px; margin: 14px 0 8px; }
-.slot {
-  background: var(--raised); border: 0.5px solid var(--border);
-  border-radius: 8px; padding: 8px 4px; text-align: center;
-  min-height: 64px; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 2px;
-  cursor: pointer; transition: border-color 0.15s, background 0.15s;
-}
-.slot:hover { border-color: var(--border2); }
-.slot.filled { border-color: var(--teal); background: var(--teal-d); }
-.slot.filled.is-champ { border-color: var(--gold); background: var(--gold-d); }
-.slot-rank { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
-.slot.filled .slot-rank { color: var(--teal); }
-.slot.is-champ .slot-rank { color: var(--gold) !important; }
-.slot-flag { font-size: 18px; line-height: 1; }
-.slot-name { font-size: 9px; font-weight: 500; color: var(--teal); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 2px; }
-.slot.is-champ .slot-name { color: var(--gold); }
-.slot-empty { font-size: 18px; color: var(--border2); }
+/* ── Group standings ── */
+.groups-two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:520px){.groups-two-col{grid-template-columns:1fr;}}
+.standings-table{width:100%;}
+.standings-table th{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;padding:5px 4px;text-align:right;border-bottom:0.5px solid var(--border);}
+.standings-table th:first-child{text-align:left;}
+.standings-table td{font-size:11px;padding:7px 4px;text-align:right;border-bottom:0.5px solid var(--border);color:var(--text);}
+.standings-table td:first-child{text-align:left;color:var(--text);display:flex;align-items:center;gap:5px;}
+.standings-table tr:last-child td{border-bottom:none;}
+.standings-table tr.advancing td{background:rgba(255,58,74,0.04);}
+.st-pos{font-size:10px;color:var(--muted);font-family:var(--mono);width:12px;flex-shrink:0;}
+.st-flag{font-size:14px;flex-shrink:0;}
+.st-pts{font-weight:600;color:var(--text);}
+.st-gd{color:var(--sub);}
 
-/* ── Progress ── */
-.progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.progress-bg { flex: 1; height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--teal); border-radius: 2px; transition: width 0.3s; }
-.progress-lbl { font-size: 11px; color: var(--muted); font-family: var(--mono); min-width: 32px; text-align: right; }
-.hint { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 14px; }
+/* ── Team intel panel ── */
+.intel-panel{background:var(--raised);border:0.5px solid var(--border);border-radius:10px;padding:14px;margin-top:12px;display:none;}
+.intel-panel.show{display:block;}
+.intel-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.intel-flag{font-size:30px;}
+.intel-name{font-size:15px;font-weight:600;color:var(--text);}
+.intel-group{font-size:11px;color:var(--muted);}
+.intel-body{font-size:13px;color:var(--text);line-height:1.6;}
+.intel-loading{color:var(--muted);font-size:12px;font-style:italic;}
+.intel-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.intel-bar-lbl{font-size:11px;color:var(--muted);width:70px;flex-shrink:0;}
+.intel-bar-bg{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.intel-bar-fill{height:100%;border-radius:3px;background:var(--red);transition:width 0.5s;}
+.intel-score-val{font-size:11px;font-family:var(--mono);color:var(--red);width:28px;text-align:right;}
 
-/* ── Group picker ── */
-.groups-grid { display: flex; flex-direction: column; gap: 6px; max-height: 360px; overflow-y: auto; padding-right: 2px; }
-.group-block { background: var(--raised); border: 0.5px solid var(--border); border-radius: 8px; overflow: hidden; }
-.group-hdr {
-  font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em;
-  padding: 6px 10px; color: var(--muted); background: var(--surface);
-  border-bottom: 0.5px solid var(--border); display: flex; align-items: center; gap: 6px;
-}
-.group-hdr-letter { color: var(--teal); }
-.team-row {
-  display: flex; align-items: center; gap: 8px; padding: 7px 10px;
-  cursor: pointer; border-bottom: 0.5px solid var(--border);
-  transition: background 0.1s; position: relative;
-}
-.team-row:last-child { border-bottom: none; }
-.team-row:hover { background: var(--teal-d); }
-.team-row.selected { background: var(--teal-d); }
-.team-flag { font-size: 16px; flex-shrink: 0; }
-.team-name { font-size: 12px; color: var(--text); flex: 1; }
-.team-badge {
-  font-size: 10px; font-weight: 500; color: var(--teal);
-  background: var(--teal-d); border: 0.5px solid rgba(255,58,74,0.18);
-  border-radius: 4px; padding: 1px 5px; font-family: var(--mono);
-}
-
-/* ── CTA ── */
-.cta {
-  width: 100%; padding: 12px; background: var(--teal);
-  border: none; border-radius: 8px; color: var(--bg);
-  font-size: 14px; font-weight: 600; cursor: pointer;
-  font-family: var(--sans); letter-spacing: 0.01em;
-  transition: opacity 0.15s; margin-top: 14px;
-}
-.cta:disabled { opacity: 0.2; cursor: not-allowed; }
-.cta:not(:disabled):hover { opacity: 0.88; }
-
-/* ── Confirmation ── */
-.conf-backdrop {
-  display: none; position: fixed; inset: 0;
-  background: rgba(8,12,23,0.85); z-index: 100;
-  align-items: center; justify-content: center; padding: 24px;
-}
-.conf-backdrop.show { display: flex; }
-.conf-card {
-  background: var(--surface); border: 0.5px solid var(--teal);
-  border-radius: 16px; padding: 32px 28px; text-align: center;
-  max-width: 340px; width: 100%; position: relative; overflow: hidden;
-}
-.conf-canvas { position: absolute; inset: 0; pointer-events: none; border-radius: 16px; }
-.conf-burst { font-size: 28px; letter-spacing: 4px; margin-bottom: 16px; min-height: 38px; }
-.conf-heading { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-.conf-champ { font-size: 14px; color: var(--gold); margin-bottom: 6px; font-weight: 500; }
-.conf-sub { font-size: 13px; color: var(--sub); line-height: 1.55; margin-bottom: 24px; }
-.conf-close {
-  padding: 9px 24px; background: transparent;
-  border: 0.5px solid var(--border2); border-radius: 8px;
-  color: var(--sub); cursor: pointer; font-size: 13px;
-  font-family: var(--sans); transition: all 0.15s;
-}
-.conf-close:hover { color: var(--text); border-color: var(--teal); }
+/* ── Pick view ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
+@media(max-width:600px){.two-col{grid-template-columns:1fr;}}
+label.field-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;display:block;margin-bottom:6px;}
+.rb-input{width:100%;background:var(--raised);border:0.5px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:16px;outline:none;font-family:var(--sans);}
+.rb-input:focus{border-color:var(--red);}
+.rb-input::placeholder{color:var(--muted);}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:12px 0 8px;}
+.slot{background:var(--raised);border:0.5px solid var(--border);border-radius:8px;padding:8px 3px;text-align:center;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;transition:all 0.15s;}
+.slot:hover,.slot:active{border-color:var(--border2);}
+.slot.filled{border-color:var(--red);background:var(--red-d);}
+.slot.filled.is-champ{border-color:var(--gold);background:var(--gold-d);}
+.slot-rank{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;}
+.slot.filled .slot-rank{color:var(--red);}
+.slot.is-champ .slot-rank{color:var(--gold)!important;}
+.slot-flag{font-size:17px;line-height:1;}
+.slot-name{font-size:8px;font-weight:500;color:var(--red);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px;}
+.slot.is-champ .slot-name{color:var(--gold);}
+.slot-empty{font-size:16px;color:var(--border);}
+.progress-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.progress-bg{flex:1;height:2px;background:var(--border);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--red);border-radius:2px;transition:width 0.3s;}
+.progress-lbl{font-size:11px;color:var(--muted);font-family:var(--mono);min-width:32px;text-align:right;}
+.hint{font-size:11px;color:var(--muted);font-style:italic;margin-bottom:12px;line-height:1.5;}
+.groups-picker{display:flex;flex-direction:column;gap:5px;max-height:380px;overflow-y:auto;padding-right:2px;-webkit-overflow-scrolling:touch;}
+@media(max-width:600px){.groups-picker{max-height:280px;}}
+.group-block{background:var(--raised);border:0.5px solid var(--border);border-radius:8px;overflow:hidden;}
+.group-hdr{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;padding:6px 10px;color:var(--muted);background:var(--surface);border-bottom:0.5px solid var(--border);}
+.group-hdr-letter{color:var(--red);}
+.team-row{display:flex;align-items:center;gap:8px;padding:10px 10px;cursor:pointer;border-bottom:0.5px solid var(--border);transition:background 0.1s;position:relative;}
+.team-row:last-child{border-bottom:none;}
+.team-row:hover,.team-row:active{background:var(--red-d);}
+.team-row.selected{background:var(--red-d);}
+.team-flag{font-size:16px;flex-shrink:0;}
+.team-name{font-size:13px;color:var(--text);flex:1;}
+.team-badge{font-size:10px;font-weight:500;color:var(--red);background:var(--red-d);border:0.5px solid rgba(255,58,74,0.2);border-radius:4px;padding:2px 6px;font-family:var(--mono);}
+.cta{width:100%;padding:14px;background:var(--red);border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--sans);letter-spacing:0.01em;transition:opacity 0.15s;margin-top:12px;touch-action:manipulation;}
+.cta:disabled{opacity:0.2;cursor:not-allowed;}
+.cta:not(:disabled):hover{opacity:0.88;}
 
 /* ── Leaderboard ── */
-.lb-hdr-row {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 16px; border-bottom: 0.5px solid var(--border);
-  background: var(--raised);
-}
-.lb-col { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
-.lb-row {
-  display: flex; align-items: flex-start; gap: 8px;
-  padding: 12px 16px; border-bottom: 0.5px solid var(--border);
-  transition: background 0.1s;
-}
-.lb-row:hover { background: var(--raised); }
-.lb-row:last-child { border-bottom: none; }
-.lb-medal { font-size: 15px; width: 22px; flex-shrink: 0; padding-top: 1px; }
-.lb-flag { font-size: 19px; width: 26px; flex-shrink: 0; }
-.lb-info { flex: 1; min-width: 0; }
-.lb-name { font-size: 14px; font-weight: 500; color: var(--text); }
-.lb-time { font-size: 10px; color: var(--muted); font-family: var(--mono); margin-top: 1px; }
-.lb-picks { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
-.lb-chip {
-  display: flex; align-items: center; gap: 3px;
-  font-size: 11px; background: var(--raised);
-  border: 0.5px solid var(--border); border-radius: 5px;
-  padding: 2px 6px; color: var(--sub);
-}
-.lb-chip.champ { border-color: rgba(255,209,102,0.4); background: var(--gold-d); color: var(--gold); font-weight: 500; }
-.lb-chip-pos { opacity: 0.5; font-family: var(--mono); font-size: 10px; }
-.lb-dots { display: flex; gap: 3px; flex-shrink: 0; padding-top: 4px; }
-.lb-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border2); }
-.lb-dot.hit { background: var(--teal); }
+.lb-hdr-row{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:0.5px solid var(--border);background:var(--raised);}
+.lb-col{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;}
+.lb-row{display:flex;align-items:flex-start;gap:8px;padding:12px 14px;border-bottom:0.5px solid var(--border);transition:background 0.1s;}
+.lb-row:hover{background:var(--raised);}
+.lb-row:last-child{border-bottom:none;}
+.lb-medal{font-size:14px;width:20px;flex-shrink:0;padding-top:2px;}
+.lb-flag{font-size:18px;width:24px;flex-shrink:0;}
+.lb-info{flex:1;min-width:0;}
+.lb-name{font-size:14px;font-weight:500;color:var(--text);}
+.lb-time{font-size:10px;color:var(--sub);font-family:var(--mono);margin-top:1px;}
+.lb-picks{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px;}
+.lb-chip{display:flex;align-items:center;gap:2px;font-size:10px;background:var(--raised);border:0.5px solid var(--border);border-radius:4px;padding:2px 5px;color:var(--text);}
+.lb-chip.champ{border-color:rgba(255,209,102,0.4);background:var(--gold-d);color:var(--gold);font-weight:500;}
+.lb-chip.correct{border-color:rgba(34,197,94,0.4);background:var(--green-d);color:var(--green);}
+.lb-chip-pos{opacity:0.5;font-family:var(--mono);font-size:9px;}
+.lb-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;}
+.lb-score{font-size:17px;font-weight:700;color:var(--red);font-family:var(--mono);}
+.lb-score-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+.lb-share-btn{font-size:11px;color:var(--muted);background:var(--raised);border:0.5px solid var(--border);border-radius:5px;padding:5px 8px;cursor:pointer;font-family:var(--sans);transition:all 0.12s;white-space:nowrap;touch-action:manipulation;}
+.lb-share-btn:hover{color:var(--gold);border-color:rgba(255,209,102,0.4);}
+@media(max-width:400px){.lb-flag{display:none;}.lb-chip-pos{display:none;}}
 
 /* ── Heatmap ── */
-.hm-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
-.hm-label { font-size: 12px; color: var(--text); width: 110px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: flex; align-items: center; gap: 5px; }
-.hm-bar-bg { flex: 1; height: 8px; background: var(--raised); border-radius: 4px; overflow: hidden; border: 0.5px solid var(--border); }
-.hm-bar { height: 100%; border-radius: 4px; background: var(--teal); transition: width 0.6s cubic-bezier(0.25,1,0.5,1); }
-.hm-count { font-size: 11px; color: var(--muted); font-family: var(--mono); width: 24px; text-align: right; flex-shrink: 0; }
+.hm-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+.hm-label{font-size:12px;color:var(--text);width:90px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;gap:4px;}
+.hm-bar-bg{flex:1;height:8px;background:var(--raised);border-radius:4px;overflow:hidden;border:0.5px solid var(--border);}
+.hm-bar{height:100%;border-radius:4px;background:var(--red);transition:width 0.6s cubic-bezier(0.25,1,0.5,1);}
+.hm-count{font-size:11px;color:var(--muted);font-family:var(--mono);width:24px;text-align:right;flex-shrink:0;}
 
-/* ── Empty / loading ── */
-.empty { text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: 13px; line-height: 1.6; }
-.loading { text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: 13px; }
+/* ── Confirmation ── */
+.conf-backdrop{display:none;position:fixed;inset:0;background:rgba(8,12,23,0.9);z-index:100;align-items:center;justify-content:center;padding:16px;}
+.conf-backdrop.show{display:flex;}
+.conf-card{background:var(--surface);border:0.5px solid var(--red);border-radius:16px;padding:28px 20px;text-align:center;max-width:340px;width:100%;position:relative;overflow:hidden;}
+.conf-canvas{position:absolute;inset:0;pointer-events:none;}
+.conf-burst{font-size:26px;letter-spacing:4px;margin-bottom:14px;min-height:36px;}
+.conf-heading{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.conf-champ{font-size:14px;color:var(--gold);margin-bottom:6px;font-weight:500;}
+.conf-sub{font-size:13px;color:var(--sub);line-height:1.55;margin-bottom:18px;}
+.conf-actions{display:flex;flex-direction:column;gap:8px;}
+.conf-close{padding:12px 24px;background:var(--red);border:none;border-radius:8px;color:#fff;cursor:pointer;font-size:14px;font-weight:600;font-family:var(--sans);touch-action:manipulation;}
+.conf-share{padding:10px 24px;background:transparent;border:0.5px solid var(--border2);border-radius:8px;color:var(--sub);cursor:pointer;font-size:13px;font-family:var(--sans);}
+.conf-share:hover{border-color:var(--gold);color:var(--gold);}
 
-/* ── Toast ── */
-.toast {
-  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-  background: var(--raised); border: 0.5px solid var(--border2);
-  color: var(--text); padding: 10px 20px; border-radius: 8px;
-  font-size: 13px; opacity: 0; transition: opacity 0.25s;
-  pointer-events: none; z-index: 200; white-space: nowrap;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-}
-.toast.show { opacity: 1; }
+/* ── Admin ── */
+.admin-wrap{margin-bottom:14px;display:none;}
+.admin-panel{background:var(--surface);border:0.5px solid var(--border2);border-radius:12px;overflow:hidden;}
+.admin-hdr{padding:12px 16px;border-bottom:0.5px solid var(--border);background:var(--raised);display:flex;align-items:center;justify-content:space-between;}
+.admin-title{font-size:13px;font-weight:600;color:var(--red);}
+.admin-body{padding:16px;display:flex;flex-direction:column;gap:18px;}
+.admin-section-title{font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;}
+.admin-results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;max-height:280px;overflow-y:auto;}
+@media(max-width:480px){.admin-results-grid{grid-template-columns:repeat(2,1fr);}}
+.admin-result-row{display:flex;align-items:center;gap:6px;background:var(--raised);border:0.5px solid var(--border);border-radius:7px;padding:6px 8px;cursor:pointer;transition:border-color 0.12s;touch-action:manipulation;}
+.admin-result-row.set{border-color:var(--green);background:var(--green-d);}
+.ar-flag{font-size:15px;}
+.ar-name{font-size:10px;color:var(--text);flex:1;}
+.ar-check{font-size:12px;opacity:0;color:var(--green);}
+.admin-result-row.set .ar-check{opacity:1;}
+.deadline-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;}
+.deadline-row .rb-input{flex:1;min-width:160px;}
+.admin-save-btn{padding:10px 14px;background:var(--red);border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);white-space:nowrap;touch-action:manipulation;}
+.admin-pw-row{display:flex;gap:8px;}
+.admin-login{padding:16px;display:flex;flex-direction:column;gap:10px;}
 
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+/* ── Countdown ── */
+.countdown-banner{background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.countdown-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;}
+.countdown-time{font-size:15px;font-weight:700;color:var(--gold);font-family:var(--mono);}
+.locked-banner{background:rgba(255,58,74,0.08);border:0.5px solid rgba(255,58,74,0.3);border-radius:10px;padding:14px 16px;margin-bottom:14px;text-align:center;}
+.locked-title{font-size:15px;font-weight:600;color:var(--red);margin-bottom:4px;}
+.locked-sub{font-size:13px;color:var(--sub);}
+.score-banner{background:var(--green-d);border:0.5px solid rgba(34,197,94,0.3);border-radius:10px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+.score-banner-left{font-size:12px;color:var(--green);font-weight:500;}
+.score-banner-right{font-size:11px;color:var(--sub);}
+
+/* ── Share modal ── */
+.share-modal{display:none;position:fixed;inset:0;background:rgba(8,12,23,0.92);z-index:200;align-items:center;justify-content:center;padding:16px;overflow-y:auto;}
+.share-modal.show{display:flex;}
+.share-modal-inner{background:var(--surface);border:0.5px solid var(--border);border-radius:16px;padding:20px;max-width:440px;width:100%;text-align:center;}
+.share-modal-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.share-modal-sub{font-size:12px;color:var(--muted);margin-bottom:14px;}
+#share-preview{border-radius:10px;max-width:100%;width:100%;height:auto;display:block;margin:0 auto 14px;}
+.share-modal-actions{display:flex;gap:8px;}
+.share-dl-btn{flex:1;padding:12px;background:var(--gold);border:none;border-radius:8px;color:var(--bg);font-size:14px;font-weight:600;cursor:pointer;font-family:var(--sans);touch-action:manipulation;}
+.share-cancel{flex:1;padding:12px;background:transparent;border:0.5px solid var(--border2);border-radius:8px;color:var(--sub);font-size:14px;cursor:pointer;font-family:var(--sans);}
+
+/* ── Misc ── */
+.empty{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:13px;line-height:1.6;}
+.loading-msg{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:13px;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--raised);border:0.5px solid var(--border2);color:var(--text);padding:10px 16px;border-radius:8px;font-size:13px;opacity:0;transition:opacity 0.25s;pointer-events:none;z-index:300;max-width:calc(100vw - 32px);text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.4);}
+.toast.show{opacity:1;}
+::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-track{background:transparent;} ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+.api-badge{font-size:9px;color:var(--muted);background:var(--raised);border:0.5px solid var(--border);border-radius:4px;padding:2px 6px;letter-spacing:0.04em;}
+
+/* ── Team cards ── */
+.team-cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:700px){.team-cards-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:420px){.team-cards-grid{grid-template-columns:1fr;}}
+.team-hero-card{background:var(--surface);border:0.5px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color 0.15s,transform 0.15s;cursor:pointer;position:relative;}
+.team-hero-card:hover{border-color:var(--red);transform:translateY(-2px);}
+.team-hero-card.expanded{border-color:var(--red);}
+.thc-flag-bar{height:6px;width:100%;}
+.thc-body{padding:14px;}
+.thc-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.thc-flag-emoji{font-size:44px;line-height:1;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));}
+.thc-info{flex:1;min-width:0;}
+.thc-name{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.01em;}
+.thc-group{font-size:10px;color:var(--sub);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px;}
+.thc-ranking{display:inline-flex;align-items:center;gap:5px;margin-top:6px;background:var(--raised);border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;}
+.thc-ranking-val{font-size:13px;font-weight:700;color:var(--gold);font-family:var(--mono);}
+.thc-ranking-lbl{font-size:10px;color:var(--muted);}
+.thc-players{margin-bottom:10px;}
+.thc-players-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;}
+.thc-player-chips{display:flex;flex-wrap:wrap;gap:4px;}
+.thc-player{font-size:11px;background:var(--raised);border:0.5px solid var(--border);border-radius:5px;padding:3px 8px;color:var(--text);}
+.thc-player.star{border-color:rgba(255,209,102,0.35);color:var(--gold);background:var(--gold-d);}
+.thc-expand-btn{width:100%;padding:8px;background:transparent;border:none;border-top:0.5px solid var(--border);color:var(--muted);font-size:11px;cursor:pointer;font-family:var(--sans);letter-spacing:0.04em;text-transform:uppercase;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.thc-expand-btn:hover{color:var(--red);background:var(--red-d);}
+.thc-intel{padding:12px 14px;border-top:0.5px solid var(--border);display:none;background:var(--raised);}
+.thc-intel.show{display:block;}
+.thc-intel-loading{font-size:12px;color:var(--muted);font-style:italic;text-align:center;padding:8px 0;}
+.thc-pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+@media(max-width:420px){.thc-pros-cons{grid-template-columns:1fr;}}
+.thc-pro,.thc-con{border-radius:8px;padding:10px;}
+.thc-pro{background:rgba(34,197,94,0.07);border:0.5px solid rgba(34,197,94,0.2);}
+.thc-con{background:rgba(255,58,74,0.07);border:0.5px solid rgba(255,58,74,0.2);}
+.thc-pc-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;}
+.thc-pro .thc-pc-title{color:var(--green);}
+.thc-con .thc-pc-title{color:var(--red);}
+.thc-pc-text{font-size:13px;color:var(--text);line-height:1.6;}
+.thc-strength-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.thc-strength-lbl{font-size:10px;color:var(--muted);width:60px;flex-shrink:0;}
+.thc-strength-bg{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.thc-strength-fill{height:100%;border-radius:3px;background:var(--red);transition:width 0.6s;}
+.thc-strength-val{font-size:10px;color:var(--red);font-family:var(--mono);width:22px;text-align:right;flex-shrink:0;}
+
+
+/* ── Quiz ── */
+.quiz-option{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--raised);border:0.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.15s;text-align:left;width:100%;font-family:var(--sans);}
+.quiz-option:hover,.quiz-option:active{border-color:var(--red);background:var(--red-d);}
+.quiz-option.selected{border-color:var(--red);background:var(--red-d);}
+.quiz-option-letter{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;margin-top:1px;}
+.quiz-option.selected .quiz-option-letter{background:var(--red);color:#fff;}
+.quiz-option-text{font-size:14px;color:var(--text);line-height:1.45;}
+.section-gap{height:14px;}
+@media(hover:none){.team-row{padding:11px 10px;}.slot{min-height:64px;}.tab{padding:10px 6px;}}
 </style>
 </head>
 <body>
+<div id="page-wrap">
+
+<!-- Live ticker -->
+<div class="ticker-outer">
+<div class="ticker-wrap" id="ticker-wrap">
+  <div class="ticker-label">⚽ Live</div>
+  <div class="ticker-inner"><div class="ticker-track" id="ticker-track"><span class="ticker-item" style="color:var(--muted);font-style:italic">Loading match data…</span></div></div>
+</div>
+</div>
+
 <div id="app">
 
   <!-- Header -->
   <div class="hdr">
     <div class="hdr-left">
-      <svg class="rb-logo" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="18" cy="18" r="17" fill="#CC1E1E"/>
-        <ellipse cx="12" cy="18" rx="5.5" ry="3.5" fill="#FFD166" transform="rotate(-15 12 18)"/>
-        <ellipse cx="24" cy="18" rx="5.5" ry="3.5" fill="#FFD166" transform="rotate(15 24 18)"/>
-        <ellipse cx="18" cy="18" rx="3.5" ry="3" fill="#CC1E1E"/>
-        <path d="M13.5 13.5 Q18 10 22.5 13.5" stroke="#FFD166" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-        <path d="M12.5 11.5 Q12 8.5 9.5 7.5" stroke="#FFD166" stroke-width="1.3" fill="none" stroke-linecap="round"/>
-        <path d="M23.5 11.5 Q24 8.5 26.5 7.5" stroke="#FFD166" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+      <svg class="rb-logo" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="19" fill="#CC1E1E"/>
+        <ellipse cx="13" cy="20" rx="6" ry="4" fill="#FFD166" transform="rotate(-15 13 20)"/>
+        <ellipse cx="27" cy="20" rx="6" ry="4" fill="#FFD166" transform="rotate(15 27 20)"/>
+        <ellipse cx="20" cy="20" rx="4" ry="3.5" fill="#CC1E1E"/>
+        <path d="M14.5 14.5 Q20 11 25.5 14.5" stroke="#FFD166" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M13 12.5 Q12.5 9 10 8" stroke="#FFD166" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <path d="M27 12.5 Q27.5 9 30 8" stroke="#FFD166" stroke-width="1.4" fill="none" stroke-linecap="round"/>
       </svg>
       <div>
-        <div class="hdr-title">World Cup 2026 · Prediction League</div>
-        <div class="hdr-sub">RBNA IT · Quarterfinals Edition</div>
+        <div class="hdr-title">WC 2026 Command Center</div>
+        <div class="hdr-sub">RBNA IT · Live · Prediction League</div>
       </div>
     </div>
-    <div class="live-pill"><div class="live-dot"></div>Live</div>
+    <div class="hdr-right">
+      <div class="pill pill-live"><div class="pill-dot"></div><span class="pill-text">Live</span></div>
+      <button class="admin-btn" onclick="toggleAdmin()">⚙</button>
+    </div>
+  </div>
+
+  <!-- Admin -->
+  <div id="admin-wrap" class="admin-wrap">
+    <div class="admin-panel">
+      <div class="admin-hdr"><div class="admin-title">⚙ Admin Panel</div><button class="admin-btn" onclick="toggleAdmin()">Close</button></div>
+      <div id="admin-login" class="admin-login">
+        <label class="field-lbl">Password</label>
+        <div class="admin-pw-row">
+          <input class="rb-input" type="password" id="admin-pw-input" placeholder="Enter admin password…" style="flex:1"/>
+          <button class="admin-save-btn" onclick="adminLogin()">Unlock</button>
+        </div>
+        <div style="font-size:11px;color:var(--muted)">Default: <code style="color:var(--sub)">rbnait2026</code> — change before deploying</div>
+      </div>
+      <div id="admin-controls" style="display:none">
+        <div class="admin-body">
+          <div>
+            <div class="admin-section-title">🔒 Submission deadline</div>
+            <div class="deadline-row">
+              <input class="rb-input" type="datetime-local" id="admin-deadline"/>
+              <button class="admin-save-btn" onclick="saveDeadline()">Save</button>
+              <button class="admin-save-btn" style="background:var(--raised);color:var(--muted);border:0.5px solid var(--border)" onclick="clearDeadline()">Clear</button>
+            </div>
+          </div>
+          <div>
+            <div class="admin-section-title">🏆 Actual QF teams (select exactly 8)</div>
+            <div class="admin-results-grid" id="admin-results-grid"></div>
+            <div style="font-size:12px;color:var(--sub);margin-top:8px" id="admin-results-selected">None selected</div>
+            <button class="admin-save-btn" style="margin-top:10px;width:100%" onclick="saveResults()">Save &amp; recalculate scores</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Stats -->
   <div class="stats">
     <div class="stat"><div class="stat-val" id="st-entries">—</div><div class="stat-lbl">Entries</div></div>
-    <div class="stat"><div class="stat-val" id="st-fav">—</div><div class="stat-lbl">Champion fav</div></div>
-    <div class="stat"><div class="stat-val" id="st-dark">—</div><div class="stat-lbl">Dark horse</div></div>
+    <div class="stat"><div class="stat-val gold" id="st-fav">—</div><div class="stat-lbl">Champion fav</div></div>
+    <div class="stat"><div class="stat-val green" id="st-dark">—</div><div class="stat-lbl">Dark horse</div></div>
+    <div class="stat"><div class="stat-val" id="st-matches">—</div><div class="stat-lbl">Matches today</div></div>
+  </div>
+
+  <!-- Banners -->
+  <div id="countdown-banner" class="countdown-banner" style="display:none">
+    <div class="countdown-label">⏱ Picks lock in</div>
+    <div class="countdown-time" id="countdown-time">—</div>
+  </div>
+  <div id="locked-banner" class="locked-banner" style="display:none">
+    <div class="locked-title">🔒 Submissions closed</div>
+    <div class="locked-sub" id="locked-sub">The prediction window has passed.</div>
+  </div>
+  <div id="score-banner" class="score-banner" style="display:none">
+    <div class="score-banner-left">🏆 Results in — scores updated</div>
+    <div class="score-banner-right" id="score-banner-right"></div>
   </div>
 
   <!-- Tabs -->
   <div class="tabs">
-    <button class="tab active" id="tab-pick" onclick="switchTab('pick')">Make your pick</button>
+    <button class="tab active" id="tab-today" onclick="switchTab('today')">Today</button>
+    <button class="tab" id="tab-groups" onclick="switchTab('groups')">Groups</button>
+    <button class="tab" id="tab-pick" onclick="switchTab('pick')">My pick</button>
     <button class="tab" id="tab-board" onclick="switchTab('board')">Leaderboard</button>
     <button class="tab" id="tab-heat" onclick="switchTab('heat')">Heat map</button>
+    <button class="tab" id="tab-teams" onclick="switchTab('teams')">Teams</button>
+    <button class="tab" id="tab-quiz" onclick="switchTab('quiz')">Find my team</button>
   </div>
 
-  <!-- PICK VIEW -->
+  <!-- TODAY -->
+  <div id="view-today">
+    <div class="card">
+      <div class="card-hdr"><span class="card-hdr-accent">Today's matches</span><span class="api-badge">live data</span></div>
+      <div class="card-body"><div id="today-fixtures" class="fixtures-grid"><div class="loading-msg">Loading fixtures…</div></div></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-hdr-accent">Tournament overview</span></div>
+      <div class="card-body" id="tournament-overview"><div class="loading-msg">Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- GROUPS -->
+  <div id="view-groups" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><span class="card-hdr-accent">Group standings</span><span class="api-badge">live</span></div>
+      <div class="card-body"><div class="groups-two-col" id="standings-container"><div class="loading-msg">Loading standings…</div></div></div>
+    </div>
+  </div>
+
+  <!-- PICK -->
   <div id="view-pick">
-    <div class="two-col">
-      <!-- Left: name + slots -->
+    <div class="two-col" style="display:none" id="pick-inner">
       <div>
         <div class="card">
           <div class="card-hdr">Your prediction</div>
@@ -322,66 +481,176 @@ label.field-lbl { font-size: 11px; color: var(--muted); text-transform: uppercas
           </div>
         </div>
       </div>
-      <!-- Right: group picker -->
       <div>
         <div class="card">
-          <div class="card-hdr"><span>All 48 teams by group</span><span style="color:var(--muted);font-size:10px">2026 Draw</span></div>
+          <div class="card-hdr"><span>Teams by group</span><span class="api-badge">2026 draw</span></div>
           <div class="card-body" style="padding:10px">
-            <div class="groups-grid" id="rb-groups"></div>
+            <div class="groups-picker" id="rb-groups"></div>
+          </div>
+        </div>
+        <!-- Team intel panel (AI-powered) -->
+        <div class="intel-panel" id="intel-panel">
+          <div class="intel-header">
+            <div class="intel-flag" id="intel-flag"></div>
+            <div><div class="intel-name" id="intel-name"></div><div class="intel-group" id="intel-group"></div></div>
+          </div>
+          <div id="intel-bars"></div>
+          <div style="margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border)">
+            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px">AI scouting report</div>
+            <div class="intel-body" id="intel-body"><span class="intel-loading">Click a team to load scouting report…</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- LEADERBOARD VIEW -->
+  <!-- BOARD -->
   <div id="view-board" style="display:none">
     <div class="card">
       <div class="lb-hdr-row">
         <div class="lb-col" style="width:22px">#</div>
         <div class="lb-col" style="width:26px"></div>
         <div class="lb-col" style="flex:1">Player</div>
-        <div class="lb-col" style="width:56px;text-align:center">Picks</div>
-        <div class="lb-col" style="width:60px;text-align:right">Submitted</div>
+        <div class="lb-col" style="width:80px;text-align:right">Score / Share</div>
       </div>
-      <div id="rb-leaderboard"><div class="loading">Loading…</div></div>
+      <div id="rb-leaderboard"><div class="loading-msg">Loading…</div></div>
     </div>
   </div>
 
-  <!-- HEATMAP VIEW -->
+  <!-- HEAT -->
   <div id="view-heat" style="display:none">
     <div class="card">
-      <div class="card-hdr">Most picked teams — weighted by rank position</div>
-      <div class="card-body">
-        <div id="rb-heatmap"><div class="loading">Loading…</div></div>
+      <div class="card-hdr">Most picked teams — weighted by rank</div>
+      <div class="card-body"><div id="rb-heatmap"><div class="loading-msg">Loading…</div></div></div>
+    </div>
+  </div>
+
+  <!-- TEAMS -->
+  <div id="view-teams" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--text)">Team Intelligence</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">AI-powered scouting reports for all 48 teams</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <input id="team-search" class="rb-input" placeholder="Search team…" style="width:160px;padding:8px 12px;font-size:13px" oninput="filterTeamCards(this.value)"/>
+        <select id="group-filter" class="rb-input" style="width:120px;padding:8px 12px;font-size:13px" onchange="filterTeamCards(document.getElementById('team-search').value)">
+          <option value="">All groups</option>
+          <option value="A">Group A</option><option value="B">Group B</option>
+          <option value="C">Group C</option><option value="D">Group D</option>
+          <option value="E">Group E</option><option value="F">Group F</option>
+          <option value="G">Group G</option><option value="H">Group H</option>
+          <option value="I">Group I</option><option value="J">Group J</option>
+          <option value="K">Group K</option><option value="L">Group L</option>
+        </select>
+      </div>
+    </div>
+    <div class="team-cards-grid" id="team-cards-grid"></div>
+  </div>
+
+
+  <!-- QUIZ -->
+  <div id="view-quiz" style="display:none">
+    <div id="quiz-intro" class="card" style="text-align:center;padding:0">
+      <div style="padding:40px 24px 32px">
+        <div style="font-size:56px;margin-bottom:16px">🤔</div>
+        <div style="font-size:22px;font-weight:700;color:var(--text);margin-bottom:10px">Which team should you support?</div>
+        <div style="font-size:14px;color:var(--sub);line-height:1.6;max-width:400px;margin:0 auto 28px">
+          10 brutally honest questions. One team result. Possibly life-changing.
+          <br>Probably not. But let's find out.
+        </div>
+        <button onclick="startQuiz()" style="padding:14px 40px;background:var(--red);border:none;border-radius:10px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);letter-spacing:0.01em">
+          Let's go ⚽
+        </button>
+      </div>
+    </div>
+
+    <div id="quiz-question-view" style="display:none">
+      <div class="card" style="padding:0;overflow:hidden">
+        <!-- Progress bar -->
+        <div style="height:4px;background:var(--border)">
+          <div id="quiz-progress-fill" style="height:100%;background:var(--red);transition:width 0.4s;width:0%"></div>
+        </div>
+        <div style="padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between">
+          <div id="quiz-counter" style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em">Question 1 of 10</div>
+          <button onclick="resetQuiz()" style="font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--sans)">Start over</button>
+        </div>
+        <div style="padding:24px 20px 8px">
+          <div id="quiz-emoji" style="font-size:36px;margin-bottom:12px"></div>
+          <div id="quiz-question" style="font-size:19px;font-weight:700;color:var(--text);line-height:1.35;margin-bottom:24px"></div>
+          <div id="quiz-options" style="display:flex;flex-direction:column;gap:10px;padding-bottom:20px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="quiz-result-view" style="display:none">
+      <div class="card" style="padding:0;overflow:hidden;text-align:center">
+        <div style="height:6px;background:linear-gradient(90deg,var(--red),#FFD166)"></div>
+        <div style="padding:36px 24px">
+          <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px">Your team is</div>
+          <div id="result-flag" style="font-size:80px;margin-bottom:8px;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4))"></div>
+          <div id="result-name" style="font-size:30px;font-weight:700;color:var(--text);margin-bottom:4px"></div>
+          <div id="result-tagline" style="font-size:13px;color:var(--red);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px"></div>
+          <div id="result-reason" style="font-size:14px;color:var(--sub);line-height:1.7;max-width:480px;margin:0 auto 28px;text-align:left;background:var(--raised);border:0.5px solid var(--border);border-radius:10px;padding:16px 18px"></div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <button onclick="resetQuiz()" style="padding:12px 28px;background:var(--red);border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--sans)">Try again</button>
+            <button onclick="shareQuizResult()" style="padding:12px 28px;background:transparent;border:0.5px solid var(--border2);border-radius:8px;color:var(--sub);font-size:14px;cursor:pointer;font-family:var(--sans)">Share result 🎴</button>
+          </div>
+          <div id="result-also" style="margin-top:24px;padding-top:20px;border-top:0.5px solid var(--border)">
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:12px">You also scored highly for</div>
+            <div id="result-runners" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-</div>
+</div><!-- /#app -->
+</div><!-- /#page-wrap -->
 
 <!-- Confirmation -->
 <div class="conf-backdrop" id="conf-backdrop">
   <div class="conf-card">
-    <canvas class="conf-canvas" id="conf-canvas" width="340" height="340"></canvas>
+    <canvas class="conf-canvas" id="conf-canvas" width="360" height="360"></canvas>
     <div class="conf-burst" id="conf-burst"></div>
     <div class="conf-heading" id="conf-heading"></div>
     <div class="conf-champ" id="conf-champ"></div>
     <div class="conf-sub" id="conf-sub"></div>
-    <button class="conf-close" id="conf-close">See the leaderboard →</button>
+    <div class="conf-actions">
+      <button class="conf-share" id="conf-share-btn">🎴 Download share card</button>
+      <button class="conf-close" id="conf-close">See leaderboard →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Share modal -->
+<div class="share-modal" id="share-modal">
+  <div class="share-modal-inner">
+    <div class="share-modal-title">Your prediction card</div>
+    <div class="share-modal-sub">Download and post on Teams or Slack.</div>
+    <canvas id="share-preview" width="400" height="500"></canvas>
+    <div class="share-modal-actions">
+      <button class="share-dl-btn" onclick="downloadShareCard()">⬇ Download PNG</button>
+      <button class="share-cancel" onclick="closeShareModal()">Close</button>
+    </div>
   </div>
 </div>
 
 <div class="toast" id="rb-toast"></div>
 
 <script>
-// ── Config ──────────────────────────────────────────────────────────────────
-const SUPA_URL  = 'https://rqalxqbxcfixylydbqak.supabase.co/rest/v1';
-const SUPA_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJxYWx4cWJ4Y2ZpeHlseWRicWFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwMzU1NjUsImV4cCI6MjA5MzYxMTU2NX0.cbOkUs9C1Q1bbcez3pZ07xOr2D-_uHXb0FHuO9TdOcs';
-const TABLE     = 'wc2026_predictions';
-const HEADERS   = { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY };
+// ── Config ────────────────────────────────────────────────────────────────────
+const SUPA_URL   = 'https://rqalxqbxcfixylydbqak.supabase.co/rest/v1';
+const SUPA_KEY   = 'sb_publishable_VGf5jF8jraUYO0p4CnnSJQ_ubNK76DF';
+const TABLE      = 'wc2026_predictions';
+const CFG_TABLE  = 'wc2026_config';
+const ADMIN_PASS = 'rbnait2026';
+const ESPN_SCOREBOARD = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
+const ESPN_STANDINGS  = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/standings';
+const HDRS       = {'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY};
+const SCORE_MAP  = {0:10,1:7,2:5,3:5,4:3,5:3,6:3,7:3};
 
-// ── Data ────────────────────────────────────────────────────────────────────
+// ── Static data ───────────────────────────────────────────────────────────────
 const GROUPS = {
   A:[{n:'Mexico',f:'🇲🇽'},{n:'South Korea',f:'🇰🇷'},{n:'South Africa',f:'🇿🇦'},{n:'Czechia',f:'🇨🇿'}],
   B:[{n:'Canada',f:'🇨🇦'},{n:'Switzerland',f:'🇨🇭'},{n:'Qatar',f:'🇶🇦'},{n:'Bosnia-Herz.',f:'🇧🇦'}],
@@ -396,258 +665,1032 @@ const GROUPS = {
   K:[{n:'Portugal',f:'🇵🇹'},{n:'Colombia',f:'🇨🇴'},{n:'Uzbekistan',f:'🇺🇿'},{n:'Congo DR',f:'🇨🇩'}],
   L:[{n:'England',f:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'},{n:'Croatia',f:'🇭🇷'},{n:'Ghana',f:'🇬🇭'},{n:'Panama',f:'🇵🇦'}]
 };
-const RANK_LABELS = ['Champion','Runner-up','3rd place','4th place','QF','QF','QF','QF'];
+const ALL_TEAMS  = Object.values(GROUPS).flat();
+const RANK_LABELS= ['Champion','Runner-up','3rd','4th','QF','QF','QF','QF'];
 const MAX = 8;
 
-let picks   = [];
-let entries = [];
+// ── State ─────────────────────────────────────────────────────────────────────
+let picks=[], entries=[], config={deadline:null,results:[]};
+let adminUnlocked=false, adminPicks=[], shareTarget=null;
+let liveMatches=[], allStandings=[], intelCache={};
 
-// ── Helpers ─────────────────────────────────────────────────────────────────
-function teamGroup(name) {
-  for (const [g, ts] of Object.entries(GROUPS)) { if (ts.find(t => t.n === name)) return g; }
-  return null;
-}
-function findTeam(name) {
-  for (const ts of Object.values(GROUPS)) { const t = ts.find(x => x.n === name); if (t) return t; }
-  return null;
-}
-function medal(i) { return ['🥇','🥈','🥉'][i] ?? (i + 1) + '.'; }
-function fmtTime(iso) {
-  const d = new Date(iso);
-  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' ' +
-         d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-}
-function showToast(msg) {
-  const t = document.getElementById('rb-toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3200);
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function teamGroup(n){for(const[g,ts]of Object.entries(GROUPS)){if(ts.find(t=>t.n===n))return g;}return null;}
+function findTeam(n){return ALL_TEAMS.find(t=>t.n===n)||null;}
+function medal(i){return['🥇','🥈','🥉'][i]??(i+1)+'.';}
+function fmtTime(iso){const d=new Date(iso);return d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}
+function showToast(msg,dur=3200){const t=document.getElementById('rb-toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+function isLocked(){return config.deadline&&new Date()>new Date(config.deadline);}
+function calcScore(userPicks){if(!config.results||config.results.length===0)return null;let pts=0;userPicks.forEach((p,i)=>{if(config.results.includes(p))pts+=SCORE_MAP[i]||0;});return pts;}
+
+// ── WC API ────────────────────────────────────────────────────────────────────
+async function fetchWCMatches(){
+  try{
+    const r=await fetch(ESPN_SCOREBOARD);
+    if(!r.ok) return [];
+    const d=await r.json();
+    // Normalise ESPN event shape → our internal shape
+    return (d.events||[]).map(ev=>{
+      const comp=ev.competitions?.[0]||{};
+      const home=comp.competitors?.find(c=>c.homeAway==='home')||comp.competitors?.[0]||{};
+      const away=comp.competitors?.find(c=>c.homeAway==='away')||comp.competitors?.[1]||{};
+      const status=comp.status||{};
+      const stateType=status.type?.state||'pre'; // pre | in | post
+      const shortDetail=status.type?.shortDetail||'';
+      const period=status.period||0;
+      // Map ESPN phase to our phase strings
+      let phase='PRE';
+      if(stateType==='in'){
+        if(period===1) phase='1H';
+        else if(period===2) phase='2H';
+        else phase='ET';
+      } else if(stateType==='post') phase='FT';
+      return{
+        id:ev.id,
+        home_team:home.team?.displayName||home.team?.name||'?',
+        away_team:away.team?.displayName||away.team?.name||'?',
+        home_score:stateType!=='pre'?(parseInt(home.score)||0):null,
+        away_score:stateType!=='pre'?(parseInt(away.score)||0):null,
+        phase,
+        status:stateType,
+        kickoff_utc:comp.date||ev.date||null,
+        stadium:comp.venue?.fullName||comp.venue?.address?.city||'',
+        group_name:ev.season?.type?.name||comp.notes?.[0]?.headline||'',
+        round:ev.name||'',
+        clock:status.displayClock||shortDetail||'',
+      };
+    });
+  }catch(e){console.warn('ESPN matches error:',e);return [];}
 }
 
-// ── Supabase ─────────────────────────────────────────────────────────────────
-async function fetchEntries() {
-  try {
-    const r = await fetch(`${SUPA_URL}/${TABLE}?select=*&order=created_at.asc`, { headers: HEADERS });
-    if (!r.ok) throw new Error(await r.text());
-    return await r.json();
-  } catch (e) { console.error('fetch error', e); return []; }
+async function fetchWCStandings(){
+  try{
+    const r=await fetch(ESPN_STANDINGS);
+    if(!r.ok) return [];
+    const d=await r.json();
+    const rows=[];
+    // ESPN standings: d.children = array of groups
+    (d.children||d.standings?.entries?[{entries:d.standings.entries}]:[]||[]).forEach(group=>{
+      const groupName=(group.name||group.abbreviation||'').replace('Group ','');
+      (group.standings?.entries||group.entries||[]).forEach((entry,idx)=>{
+        const team=entry.team||{};
+        const stats={};
+        (entry.stats||[]).forEach(s=>{stats[s.name||s.abbreviation]=s.value;});
+        rows.push({
+          group_name:groupName,
+          team_name:team.displayName||team.name||'',
+          position:idx+1,
+          played:stats['gamesPlayed']||stats['GP']||0,
+          won:stats['wins']||stats['W']||0,
+          drawn:stats['ties']||stats['T']||0,
+          lost:stats['losses']||stats['L']||0,
+          goals_for:stats['pointsFor']||stats['GF']||0,
+          goals_against:stats['pointsAgainst']||stats['GA']||0,
+          points:stats['points']||stats['PTS']||0,
+        });
+      });
+    });
+    return rows;
+  }catch(e){console.warn('ESPN standings error:',e);return [];}
 }
 
-async function insertEntry(name, picksArr) {
-  const r = await fetch(`${SUPA_URL}/${TABLE}`, {
-    method: 'POST',
-    headers: { ...HEADERS, 'Prefer': 'return=representation' },
-    body: JSON.stringify({ name, picks: picksArr })
+// ── Live ticker ───────────────────────────────────────────────────────────────
+function buildTicker(matches){
+  const track=document.getElementById('ticker-track');
+  if(!matches.length){track.innerHTML='<span class="ticker-item" style="color:var(--muted)">No matches scheduled today</span>';return;}
+  const today=new Date().toISOString().slice(0,10);
+  const todayMatches=matches.filter(m=>m.kickoff_utc&&m.kickoff_utc.slice(0,10)===today);
+  const items=todayMatches.length?todayMatches:matches.filter(m=>['1H','2H','HT','ET1','ET2','PEN'].includes(m.phase||m.status));
+  if(!items.length){track.innerHTML='<span class="ticker-item" style="color:var(--muted);font-style:italic">No matches today — check back soon</span>';return;}
+  const html=items.map(m=>{
+    const isLive=['1H','2H','HT','ET1','ET2','PEN'].includes(m.phase||'');
+    const isFT=(m.phase||m.status||'').includes('FT');
+    const score=m.home_score!=null?`${m.home_score}–${m.away_score}`:'vs';
+    const statusTxt=isLive?'LIVE':isFT?'FT':formatKickoff(m.kickoff_utc);
+    return`<span class="ticker-item">${flagFor(m.home_team)} ${m.home_team} <span class="ticker-score">${score}</span> ${m.away_team} ${flagFor(m.away_team)}${isLive?` <span class="ticker-live">LIVE</span>`:` <span style="color:var(--muted);font-size:10px">${statusTxt}</span>`}</span>`;
+  }).join('');
+  // Double up for seamless loop
+  track.innerHTML=html+html;
+}
+function flagFor(teamName){const t=findTeam(teamName);return t?t.f:'⚽';}
+function formatKickoff(iso){if(!iso)return'';const d=new Date(iso);return d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}
+
+// ── Today fixtures ────────────────────────────────────────────────────────────
+function renderTodayFixtures(matches){
+  const c=document.getElementById('today-fixtures');
+  const today=new Date().toISOString().slice(0,10);
+  let todayM=matches.filter(m=>m.kickoff_utc&&m.kickoff_utc.slice(0,10)===today);
+  // Also show any live matches
+  const live=matches.filter(m=>['1H','2H','HT','ET1','ET2','PEN'].includes(m.phase||''));
+  const combined=[...new Map([...live,...todayM].map(m=>[m.id,m])).values()];
+  document.getElementById('st-matches').textContent=todayM.length||live.length||'0';
+  if(!combined.length){c.innerHTML='<div class="empty" style="grid-column:1/-1">No matches scheduled for today.<br>Check the Groups tab for standings.</div>';return;}
+  c.innerHTML=combined.map(m=>{
+    const isLive=['1H','2H','HT','ET1','ET2','PEN'].includes(m.phase||'');
+    const isFT=(m.phase||m.status||'').startsWith('FT');
+    const score=m.home_score!=null?`<span class="fixture-score${isLive?' live':''}">${m.home_score}–${m.away_score}</span>`:`<span class="fixture-time">${formatKickoff(m.kickoff_utc)}</span>`;
+    const statusCls=isLive?'live':isFT?'ft':'pre';
+    const statusTxt=isLive?`⬤ ${m.phase||'LIVE'}`:isFT?'Full time':formatKickoff(m.kickoff_utc);
+    return`<div class="fixture-card${isLive?' live':isFT?' ft':''}">
+      <div class="fixture-top"><span class="fixture-group">${m.group_name?'Group '+m.group_name:m.round||''}</span><span class="fixture-status ${statusCls}">${statusTxt}</span></div>
+      <div class="fixture-teams">
+        <div class="fixture-team">${flagFor(m.home_team)} <span>${m.home_team}</span></div>
+        ${score}
+        <div class="fixture-team right"><span>${m.away_team}</span> ${flagFor(m.away_team)}</div>
+      </div>
+      <div class="fixture-venue">${m.stadium||''}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderTournamentOverview(matches){
+  const c=document.getElementById('tournament-overview');
+  if(!matches.length){c.innerHTML='<div class="empty">No data available</div>';return;}
+  const total=matches.length;
+  const played=matches.filter(m=>m.home_score!=null).length;
+  const live=matches.filter(m=>['1H','2H','HT','ET1','ET2','PEN'].includes(m.phase||'')).length;
+  const goals=matches.reduce((s,m)=>(m.home_score||0)+(m.away_score||0)+s,0);
+  c.innerHTML=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;text-align:center">
+    <div><div style="font-size:22px;font-weight:700;color:var(--red);font-family:var(--mono)">${played}</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-top:3px">Played</div></div>
+    <div><div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--mono)">${live}</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-top:3px">Live now</div></div>
+    <div><div style="font-size:22px;font-weight:700;color:var(--gold);font-family:var(--mono)">${goals}</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-top:3px">Goals</div></div>
+    <div><div style="font-size:22px;font-weight:700;color:var(--sub);font-family:var(--mono)">${total-played}</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-top:3px">Remaining</div></div>
+  </div>`;
+}
+
+// ── Standings ─────────────────────────────────────────────────────────────────
+function renderStandings(standings){
+  const c=document.getElementById('standings-container');
+  if(!standings.length){
+    // Fallback: show static groups
+    c.innerHTML=Object.entries(GROUPS).map(([g,teams])=>`
+      <div><div style="font-size:11px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Group ${g}</div>
+      <table class="standings-table"><thead><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr></thead>
+      <tbody>${teams.map((t,i)=>`<tr${i<2?' class="advancing"':''}><td><span class="st-pos">${i+1}</span><span class="st-flag">${t.f}</span>${t.n}</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="st-pts">0</td></tr>`).join('')}</tbody></table></div>
+    `).join('');
+    return;
+  }
+  // Group the standings by group
+  const byGroup={};
+  standings.forEach(row=>{
+    const g=row.group_name||row.group||'?';
+    if(!byGroup[g]) byGroup[g]=[];
+    byGroup[g].push(row);
   });
-  if (!r.ok) throw new Error(await r.text());
-  return await r.json();
+  c.innerHTML=Object.entries(byGroup).sort((a,b)=>a[0].localeCompare(b[0])).map(([g,rows])=>`
+    <div><div style="font-size:11px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Group ${g}</div>
+    <table class="standings-table"><thead><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr></thead>
+    <tbody>${rows.map((row,i)=>{
+      const t=findTeam(row.team_name||row.team||'');
+      const flag=t?t.f:'🏳';
+      const gd=(row.goals_for||row.gf||0)-(row.goals_against||row.ga||0);
+      return`<tr${i<2?' class="advancing"':''}><td><span class="st-pos">${i+1}</span><span class="st-flag">${flag}</span>${row.team_name||row.team||''}</td>
+        <td>${row.played||row.mp||0}</td><td>${row.won||row.w||0}</td><td>${row.drawn||row.d||0}</td><td>${row.lost||row.l||0}</td>
+        <td class="st-gd">${gd>=0?'+'+gd:gd}</td><td class="st-pts">${row.points||row.pts||0}</td></tr>`;
+    }).join('')}</tbody></table></div>
+  `).join('');
 }
 
-// ── Render: slots ────────────────────────────────────────────────────────────
-function buildSlots() {
-  const c = document.getElementById('rb-slots'); c.innerHTML = '';
-  for (let i = 0; i < MAX; i++) {
-    const s = document.createElement('div');
-    const filled = !!picks[i];
-    s.className = 'slot' + (filled ? ' filled' : '') + (filled && i === 0 ? ' is-champ' : '');
-    if (filled) {
-      const t = findTeam(picks[i]);
-      s.innerHTML = `<span class="slot-rank">#${i+1}</span><span class="slot-flag">${t ? t.f : ''}</span><span class="slot-name">${picks[i]}</span>`;
-    } else {
-      s.innerHTML = `<span class="slot-rank">#${i+1}</span><span class="slot-empty">+</span><span class="slot-rank" style="font-size:8px">${RANK_LABELS[i]}</span>`;
-    }
-    s.onclick = () => { if (picks[i]) { picks.splice(i, 1); refresh(); } };
+// ── Team intel (AI) ───────────────────────────────────────────────────────────
+function loadTeamIntel(teamName){
+  const panel=document.getElementById('intel-panel');
+  const t=findTeam(teamName);
+  if(!t) return;
+  panel.classList.add('show');
+  document.getElementById('intel-flag').textContent=t.f;
+  document.getElementById('intel-name').textContent=t.n;
+  document.getElementById('intel-group').textContent='Group '+teamGroup(t.n)+' · Click to pick';
+  document.getElementById('intel-body').innerHTML='<span class="intel-loading">Generating scouting report…</span>';
+  document.getElementById('intel-bars').innerHTML='';
+
+  if(intelCache[teamName]){
+    renderIntel(intelCache[teamName]);
+    return;
+  }
+
+  // Static strength scores based on FIFA ranking / tournament history
+  const STRENGTH = {
+    'Argentina':92,'Brazil':90,'France':89,'England':86,'Germany':85,'Spain':84,
+    'Portugal':83,'Netherlands':81,'Belgium':78,'Uruguay':76,'Colombia':74,
+    'Morocco':72,'USA':70,'Mexico':68,'Japan':67,'Croatia':66,'Senegal':65,
+    'Denmark':64,'Switzerland':63,'Australia':60,'South Korea':59,'Canada':58,
+    'Ecuador':55,'Austria':54,'Norway':53,'Algeria':52,'Turkey':51,'Sweden':50,
+    'Ghana':48,'Chile':47,'Iran':46,'Nigeria':45,'Scotland':43,'Ivory Coast':42,
+    'Czechia':41,'Serbia':40,'Paraguay':38,'Bolivia':36,'South Africa':35,
+    'Qatar':30,'Haiti':28,'Tunisia':32,'New Zealand':30,'Saudi Arabia':38,
+    'Cape Verde':36,'Iraq':32,'Jordan':28,'Uzbekistan':33,'Congo DR':34,
+    'Bosnia-Herz.':42,'Panama':35,'Curaçao':28
+  };
+  const str = STRENGTH[teamName]||50;
+
+  const baked=BAKED_INTEL[teamName];
+  const text=baked?(baked.can_win+' '+baked.cannot_win):'No report available.';
+  intelCache[teamName]={str,text};
+  renderIntel({str,text});
+}
+
+function renderIntel({str,text}){
+  const barsData=[
+    {lbl:'Strength',val:str},
+    {lbl:'Experience',val:Math.round(str*0.9+Math.random()*10)},
+    {lbl:'Form',val:Math.round(str*0.85+Math.random()*15)},
+  ].map(b=>({...b,val:Math.min(99,b.val)}));
+  document.getElementById('intel-bars').innerHTML=barsData.map(b=>`
+    <div class="intel-bar-row">
+      <div class="intel-bar-lbl">${b.lbl}</div>
+      <div class="intel-bar-bg"><div class="intel-bar-fill" style="width:${b.val}%"></div></div>
+      <div class="intel-score-val">${b.val}</div>
+    </div>`).join('');
+  document.getElementById('intel-body').textContent=text;
+}
+
+// ── Pick UI ───────────────────────────────────────────────────────────────────
+function buildSlots(){
+  const c=document.getElementById('rb-slots');if(!c)return;c.innerHTML='';
+  for(let i=0;i<MAX;i++){
+    const s=document.createElement('div');
+    const filled=!!picks[i];
+    s.className='slot'+(filled?' filled':'')+(filled&&i===0?' is-champ':'');
+    if(filled){const t=findTeam(picks[i]);s.innerHTML=`<span class="slot-rank">#${i+1}</span><span class="slot-flag">${t?t.f:''}</span><span class="slot-name">${picks[i]}</span>`;}
+    else{s.innerHTML=`<span class="slot-rank">#${i+1}</span><span class="slot-empty">+</span><span class="slot-rank" style="font-size:8px">${RANK_LABELS[i]}</span>`;}
+    s.onclick=()=>{if(picks[i]){picks.splice(i,1);refresh();}};
     c.appendChild(s);
   }
 }
-
-// ── Render: group picker ─────────────────────────────────────────────────────
-function buildGroups() {
-  const c = document.getElementById('rb-groups'); c.innerHTML = '';
-  for (const [grp, teams] of Object.entries(GROUPS)) {
-    const block = document.createElement('div'); block.className = 'group-block';
-    const hdr = document.createElement('div'); hdr.className = 'group-hdr';
-    hdr.innerHTML = `<span class="group-hdr-letter">Group ${grp}</span>`;
+function buildGroups(){
+  const c=document.getElementById('rb-groups');if(!c)return;c.innerHTML='';
+  for(const[grp,teams]of Object.entries(GROUPS)){
+    const block=document.createElement('div');block.className='group-block';
+    const hdr=document.createElement('div');hdr.className='group-hdr';
+    hdr.innerHTML=`<span class="group-hdr-letter">Group ${grp}</span>`;
     block.appendChild(hdr);
-    teams.forEach(t => {
-      const pi = picks.indexOf(t.n);
-      const row = document.createElement('div');
-      row.className = 'team-row' + (pi >= 0 ? ' selected' : '');
-      row.innerHTML = `<span class="team-flag">${t.f}</span><span class="team-name">${t.n}</span>${pi >= 0 ? `<span class="team-badge">#${pi+1}</span>` : ''}`;
-      row.onclick = () => toggleTeam(t.n);
+    teams.forEach(t=>{
+      const pi=picks.indexOf(t.n);
+      const row=document.createElement('div');row.className='team-row'+(pi>=0?' selected':'');
+      row.innerHTML=`<span class="team-flag">${t.f}</span><span class="team-name">${t.n}</span>${pi>=0?`<span class="team-badge">#${pi+1}</span>`:''}`;
+      row.onclick=(e)=>{e.stopPropagation();toggleTeam(t.n);};
+      row.ondblclick=()=>loadTeamIntel(t.n);
+      row.title='Click to pick · Double-click for scouting report';
       block.appendChild(row);
     });
     c.appendChild(block);
   }
 }
-
-function toggleTeam(name) {
-  if (picks.includes(name)) { picks = picks.filter(p => p !== name); refresh(); return; }
-  if (picks.length >= MAX) { showToast('Already have 8 picks — remove one first'); return; }
-  const grp = teamGroup(name);
-  const conflict = picks.find(p => teamGroup(p) === grp);
-  if (conflict) { showToast(`Already picked ${conflict} from Group ${grp}`); return; }
-  picks.push(name); refresh();
+function toggleTeam(name){
+  if(picks.includes(name)){picks=picks.filter(p=>p!==name);refresh();return;}
+  if(picks.length>=MAX){showToast('Already have 8 — remove one first');return;}
+  const grp=teamGroup(name);
+  const conflict=picks.find(p=>teamGroup(p)===grp);
+  if(conflict){showToast(`Already picked ${conflict} from Group ${grp}`);return;}
+  picks.push(name);refresh();
+  loadTeamIntel(name);
 }
-
-function refresh() {
-  buildSlots(); buildGroups();
-  const pct = Math.round(picks.length / MAX * 100);
-  document.getElementById('rb-progress').style.width = pct + '%';
-  document.getElementById('rb-progress-lbl').textContent = picks.length + ' / ' + MAX;
+function refresh(){
+  buildSlots();buildGroups();
+  const pct=Math.round(picks.length/MAX*100);
+  const pf=document.getElementById('rb-progress');if(pf)pf.style.width=pct+'%';
+  const pl=document.getElementById('rb-progress-lbl');if(pl)pl.textContent=picks.length+' / '+MAX;
   checkCTA();
 }
-
-function checkCTA() {
-  document.getElementById('rb-cta').disabled =
-    !(document.getElementById('picker-name').value.trim() && picks.length === MAX);
+function checkCTA(){
+  const cta=document.getElementById('rb-cta');if(!cta)return;
+  const name=document.getElementById('picker-name');
+  cta.disabled=!(name&&name.value.trim()&&picks.length===MAX);
 }
+document.getElementById('picker-name').addEventListener('input',checkCTA);
 
-document.getElementById('picker-name').addEventListener('input', checkCTA);
-
-// ── Render: leaderboard ──────────────────────────────────────────────────────
-function renderLeaderboard() {
-  const c = document.getElementById('rb-leaderboard');
-  if (!entries.length) { c.innerHTML = '<div class="empty">No entries yet.<br>Be the first to lock in your top 8.</div>'; return; }
-  c.innerHTML = '';
-  entries.forEach((e, i) => {
-    const champ = findTeam(e.picks[0]);
-    const chips = e.picks.map((p, pi) => {
-      const tm = findTeam(p);
-      return `<span class="lb-chip${pi === 0 ? ' champ' : ''}"><span class="lb-chip-pos">#${pi+1}</span> ${tm ? tm.f : ''} ${p}</span>`;
-    }).join('');
-    const dots = e.picks.map(() => `<div class="lb-dot"></div>`).join('');
-    const row = document.createElement('div'); row.className = 'lb-row';
-    row.innerHTML = `
-      <div class="lb-medal">${medal(i)}</div>
-      <div class="lb-flag">${champ ? champ.f : ''}</div>
-      <div class="lb-info">
-        <div class="lb-name">${e.name}</div>
-        <div class="lb-time">${fmtTime(e.created_at)}</div>
-        <div class="lb-picks">${chips}</div>
-      </div>
-      <div class="lb-dots">${dots}</div>`;
-    c.appendChild(row);
-  });
-}
-
-// ── Render: heatmap ──────────────────────────────────────────────────────────
-function renderHeatmap() {
-  const c = document.getElementById('rb-heatmap');
-  if (!entries.length) { c.innerHTML = '<div class="empty">Submit some picks first — the heat map will appear here.</div>'; return; }
-  const counts = {};
-  entries.forEach(e => e.picks.forEach((p, pi) => { counts[p] = (counts[p] || 0) + (MAX - pi); }));
-  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 14);
-  const max = sorted[0] ? sorted[0][1] : 1;
-  c.innerHTML = '';
-  sorted.forEach(([name, score]) => {
-    const t = findTeam(name);
-    const pct = Math.round(score / max * 100);
-    const row = document.createElement('div'); row.className = 'hm-row';
-    row.innerHTML = `<div class="hm-label">${t ? t.f : ''} ${name}</div><div class="hm-bar-bg"><div class="hm-bar" style="width:${pct}%"></div></div><div class="hm-count">${score}</div>`;
-    c.appendChild(row);
-  });
-}
-
-// ── Stats ────────────────────────────────────────────────────────────────────
-function updateStats() {
-  document.getElementById('st-entries').textContent = entries.length || '0';
-  if (!entries.length) {
-    document.getElementById('st-fav').textContent = '—';
-    document.getElementById('st-dark').textContent = '—';
-    return;
-  }
-  const cc = {}, ac = {};
-  entries.forEach(e => {
-    cc[e.picks[0]] = (cc[e.picks[0]] || 0) + 1;
-    e.picks.forEach((p, pi) => { ac[p] = (ac[p] || 0) + (MAX - pi); });
-  });
-  const topChamp = Object.entries(cc).sort((a, b) => b[1] - a[1])[0][0];
-  const tc = findTeam(topChamp);
-  document.getElementById('st-fav').textContent = (tc ? tc.f + ' ' : '') + topChamp;
-  const topCt = cc[topChamp] || 0;
-  const dark = Object.entries(ac).filter(([n]) => !cc[n] || cc[n] < topCt).sort((a, b) => b[1] - a[1])[0];
-  if (dark) { const dt = findTeam(dark[0]); document.getElementById('st-dark').textContent = (dt ? dt.f + ' ' : '') + dark[0]; }
-}
-
-function renderAll() { renderLeaderboard(); renderHeatmap(); updateStats(); }
-
-// ── Burst animation ──────────────────────────────────────────────────────────
-function runBurst(flags) {
-  const canvas = document.getElementById('conf-canvas');
-  const ctx = canvas.getContext('2d');
-  const cx = 170, cy = 170;
-  const particles = flags.map((f, i) => {
-    const angle = (i / flags.length) * Math.PI * 2 - Math.PI / 2;
-    const speed = 5 + Math.random() * 2;
-    return { f, x: cx, y: cy, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, alpha: 1, scale: 1 };
-  });
-  let frame = 0;
-  (function draw() {
-    ctx.clearRect(0, 0, 340, 340);
-    particles.forEach(p => {
-      ctx.globalAlpha = Math.max(0, p.alpha);
-      ctx.font = Math.round(24 * p.scale) + 'px serif';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(p.f, Math.round(p.x), Math.round(p.y));
-      p.x += p.vx; p.y += p.vy;
-      p.vx *= 0.93; p.vy *= 0.93;
-      p.alpha -= 0.016; p.scale += 0.012;
+// ── Leaderboard ───────────────────────────────────────────────────────────────
+function scoredEntries(){
+  return entries.map(e=>({...e,score:calcScore(e.picks)}))
+    .sort((a,b)=>{
+      if(a.score!==null&&b.score!==null)return b.score-a.score;
+      if(a.score!==null)return -1;if(b.score!==null)return 1;
+      return new Date(a.created_at)-new Date(b.created_at);
     });
-    ctx.globalAlpha = 1;
-    if (++frame < 60) requestAnimationFrame(draw);
-    else ctx.clearRect(0, 0, 340, 340);
-  })();
 }
-
-// ── Submit ───────────────────────────────────────────────────────────────────
-document.getElementById('rb-cta').addEventListener('click', async () => {
-  const name = document.getElementById('picker-name').value.trim();
-  if (!name || picks.length !== MAX) return;
-  if (entries.find(e => e.name.toLowerCase() === name.toLowerCase())) {
-    showToast(`${name} already has an entry!`); return;
-  }
-  document.getElementById('rb-cta').disabled = true;
-  document.getElementById('rb-cta').textContent = 'Saving…';
-  try {
-    const [saved] = await insertEntry(name, [...picks]);
-    entries.push(saved);
-    renderAll();
-    const champ = findTeam(picks[0]);
-    document.getElementById('conf-burst').textContent = picks.slice(0, 4).map(p => { const t = findTeam(p); return t ? t.f : ''; }).join(' ');
-    document.getElementById('conf-heading').textContent = name + ', locked in!';
-    document.getElementById('conf-champ').textContent = (champ ? champ.f + ' ' : '') + picks[0] + ' to win the World Cup.';
-    document.getElementById('conf-sub').textContent = 'Your picks are on the board. May the best predictions win.';
-    document.getElementById('conf-backdrop').classList.add('show');
-    runBurst(picks.map(p => { const t = findTeam(p); return t ? t.f : '⚽'; }));
-    document.getElementById('picker-name').value = '';
-    picks = []; refresh();
-  } catch (err) {
-    showToast('Save failed — check your connection and try again');
-    console.error(err);
-  }
-  document.getElementById('rb-cta').disabled = false;
-  document.getElementById('rb-cta').textContent = 'Lock in my picks 🔒';
-  checkCTA();
-});
-
-document.getElementById('conf-close').addEventListener('click', () => {
-  document.getElementById('conf-backdrop').classList.remove('show');
-  switchTab('board');
-});
-
-// ── Tabs ─────────────────────────────────────────────────────────────────────
-function switchTab(tab) {
-  ['pick', 'board', 'heat'].forEach(t => {
-    document.getElementById('tab-' + t).className = 'tab' + (t === tab ? ' active' : '');
-    document.getElementById('view-' + t).style.display = t === tab ? '' : 'none';
+function renderLeaderboard(){
+  const c=document.getElementById('rb-leaderboard');if(!c)return;
+  if(!entries.length){c.innerHTML='<div class="empty">No entries yet.<br>Be the first to lock in your top 8.</div>';return;}
+  c.innerHTML='';
+  const hasResults=config.results&&config.results.length===8;
+  scoredEntries().forEach((e,i)=>{
+    const champ=findTeam(e.picks[0]);
+    const chips=e.picks.map((p,pi)=>{
+      const tm=findTeam(p);const isCorrect=hasResults&&config.results.includes(p);
+      return`<span class="lb-chip${pi===0?' champ':''}${isCorrect?' correct':''}"><span class="lb-chip-pos">#${pi+1}</span> ${tm?tm.f:''} ${p}</span>`;
+    }).join('');
+    const row=document.createElement('div');row.className='lb-row';
+    const scoreHtml=hasResults?`<div style="text-align:right"><div class="lb-score">${e.score??0}</div><div class="lb-score-lbl">pts</div></div>`:'';
+    row.innerHTML=`<div class="lb-medal">${medal(i)}</div><div class="lb-flag">${champ?champ.f:''}</div>
+      <div class="lb-info"><div class="lb-name">${e.name}</div><div class="lb-time">${fmtTime(e.created_at)}</div><div class="lb-picks">${chips}</div></div>
+      <div class="lb-right">${scoreHtml}<button class="lb-share-btn" onclick='openShareModal(${JSON.stringify(e.name)},${JSON.stringify(e.picks)})'>🎴 Share</button></div>`;
+    c.appendChild(row);
   });
 }
 
-// ── Init ─────────────────────────────────────────────────────────────────────
-(async function init() {
-  buildSlots(); buildGroups();
-  entries = await fetchEntries();
-  renderAll();
+// ── Heatmap ───────────────────────────────────────────────────────────────────
+function renderHeatmap(){
+  const c=document.getElementById('rb-heatmap');if(!c)return;
+  if(!entries.length){c.innerHTML='<div class="empty">Submit picks first.</div>';return;}
+  const counts={};entries.forEach(e=>e.picks.forEach((p,pi)=>{counts[p]=(counts[p]||0)+(MAX-pi);}));
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,14);
+  const max=sorted[0]?sorted[0][1]:1;
+  c.innerHTML='';
+  sorted.forEach(([name,score])=>{
+    const t=findTeam(name);const pct=Math.round(score/max*100);
+    const isResult=config.results&&config.results.includes(name);
+    const row=document.createElement('div');row.className='hm-row';
+    row.innerHTML=`<div class="hm-label">${t?t.f:''} ${name}${isResult?' ✓':''}</div>
+      <div class="hm-bar-bg"><div class="hm-bar" style="width:${pct}%;${isResult?'background:var(--green)':''}"></div></div>
+      <div class="hm-count">${score}</div>`;
+    c.appendChild(row);
+  });
+}
+
+// ── Stats ─────────────────────────────────────────────────────────────────────
+function updateStats(){
+  document.getElementById('st-entries').textContent=entries.length||'0';
+  if(!entries.length){document.getElementById('st-fav').textContent='—';document.getElementById('st-dark').textContent='—';return;}
+  const cc={},ac={};
+  entries.forEach(e=>{cc[e.picks[0]]=(cc[e.picks[0]]||0)+1;e.picks.forEach((p,pi)=>{ac[p]=(ac[p]||0)+(MAX-pi);});});
+  const topChamp=Object.entries(cc).sort((a,b)=>b[1]-a[1])[0][0];
+  const tc=findTeam(topChamp);
+  document.getElementById('st-fav').textContent=(tc?tc.f+' ':'')+topChamp;
+  const topCt=cc[topChamp]||0;
+  const dark=Object.entries(ac).filter(([n])=>!cc[n]||cc[n]<topCt).sort((a,b)=>b[1]-a[1])[0];
+  if(dark){const dt=findTeam(dark[0]);document.getElementById('st-dark').textContent=(dt?dt.f+' ':'')+dark[0];}
+}
+function renderAll(){renderLeaderboard();renderHeatmap();updateStats();}
+
+// ── Share card ────────────────────────────────────────────────────────────────
+function openShareModal(name,picksArr){shareTarget={name,picks:picksArr};generateShareCard(name,picksArr);document.getElementById('share-modal').classList.add('show');}
+function closeShareModal(){document.getElementById('share-modal').classList.remove('show');shareTarget=null;}
+function generateShareCard(name,picksArr){
+  const canvas=document.getElementById('share-preview');
+  const ctx=canvas.getContext('2d');const W=400,H=500;
+  canvas.width=W;canvas.height=H;
+  ctx.fillStyle='#080C17';ctx.fillRect(0,0,W,H);
+  const g=ctx.createLinearGradient(0,0,W,0);g.addColorStop(0,'#FF3A4A');g.addColorStop(1,'#CC1E1E');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,4);
+  ctx.fillStyle='#111827';ctx.fillRect(0,4,W,68);
+  ctx.strokeStyle='#1E2D47';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(0,72);ctx.lineTo(W,72);ctx.stroke();
+  ctx.fillStyle='#CC1E1E';ctx.beginPath();ctx.arc(36,38,18,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#FFD166';ctx.font='bold 12px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('RB',36,38);
+  ctx.fillStyle='#E2EAF8';ctx.font='600 14px Inter,sans-serif';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText('World Cup 2026 · Prediction League',58,30);
+  ctx.fillStyle='#4A5F80';ctx.font='500 11px Inter,sans-serif';ctx.fillText('RBNA IT · Quarterfinals Edition',58,50);
+  ctx.fillStyle='#E2EAF8';ctx.font='700 22px Inter,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(name,W/2,88);
+  const champ=findTeam(picksArr[0]);
+  ctx.font='48px serif';ctx.textBaseline='middle';ctx.fillText(champ?champ.f:'?',W/2,162);
+  ctx.fillStyle='#FFD166';ctx.font='700 16px Inter,sans-serif';ctx.textBaseline='top';ctx.fillText(picksArr[0],W/2,194);
+  ctx.fillStyle='#4A5F80';ctx.font='500 10px Inter,sans-serif';ctx.fillText('CHAMPION PICK',W/2,216);
+  ctx.strokeStyle='#1E2D47';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(32,240);ctx.lineTo(W-32,240);ctx.stroke();
+  const rem=picksArr.slice(1);const cW=50,cH=64,sX=28,sY=254,gap=8;
+  rem.forEach((p,i)=>{
+    const col=i%4,row=Math.floor(i/4);const x=sX+col*(cW+gap),y=sY+row*(cH+10);
+    const t2=findTeam(p);
+    ctx.fillStyle='#1A2235';roundRect(ctx,x,y,cW,cH,6);ctx.fill();
+    ctx.strokeStyle=i===0?'rgba(255,209,102,0.4)':'#1E2D47';ctx.lineWidth=0.5;roundRect(ctx,x,y,cW,cH,6);ctx.stroke();
+    ctx.fillStyle='#FF3A4A';ctx.font='500 9px Inter,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText('#'+(i+2),x+cW/2,y+5);
+    ctx.font='22px serif';ctx.textBaseline='middle';ctx.fillText(t2?t2.f:'?',x+cW/2,y+32);
+    ctx.fillStyle='#8A9BBF';ctx.font='500 8px Inter,sans-serif';ctx.textBaseline='bottom';
+    ctx.fillText((p.length>9?p.slice(0,8)+'…':p),x+cW/2,y+cH-4);
+  });
+  ctx.fillStyle='#111827';ctx.fillRect(0,H-36,W,36);
+  ctx.fillStyle='#4A5F80';ctx.font='500 11px Inter,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('rbna.it · WC2026 Prediction League',W/2,H-18);
+}
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+function downloadShareCard(){if(!shareTarget)return;const canvas=document.getElementById('share-preview');const a=document.createElement('a');a.download=`wc2026-${shareTarget.name.replace(/\s+/g,'-').toLowerCase()}.png`;a.href=canvas.toDataURL('image/png');a.click();}
+
+// ── Burst ─────────────────────────────────────────────────────────────────────
+function runBurst(flags){
+  const canvas=document.getElementById('conf-canvas');const ctx=canvas.getContext('2d');const cx=180,cy=180;
+  const particles=flags.map((f,i)=>{const angle=(i/flags.length)*Math.PI*2-Math.PI/2;const speed=5+Math.random()*2.5;return{f,x:cx,y:cy,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,alpha:1,scale:1};});
+  let frame=0;(function draw(){ctx.clearRect(0,0,360,360);particles.forEach(p=>{ctx.globalAlpha=Math.max(0,p.alpha);ctx.font=Math.round(26*p.scale)+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.f,Math.round(p.x),Math.round(p.y));p.x+=p.vx;p.y+=p.vy;p.vx*=0.93;p.vy*=0.93;p.alpha-=0.016;p.scale+=0.012;});ctx.globalAlpha=1;if(++frame<65)requestAnimationFrame(draw);else ctx.clearRect(0,0,360,360);})();
+}
+
+// ── Admin ─────────────────────────────────────────────────────────────────────
+function toggleAdmin(){const w=document.getElementById('admin-wrap');w.style.display=w.style.display==='none'?'block':'none';}
+function adminLogin(){
+  if(document.getElementById('admin-pw-input').value===ADMIN_PASS){
+    adminUnlocked=true;document.getElementById('admin-login').style.display='none';document.getElementById('admin-controls').style.display='';
+    buildAdminResultsGrid();if(config.deadline)document.getElementById('admin-deadline').value=config.deadline.slice(0,16);
+    adminPicks=config.results?[...config.results]:[];buildAdminResultsGrid();
+  }else showToast('Wrong password');
+}
+async function saveDeadline(){const val=document.getElementById('admin-deadline').value;try{const upd=val?{deadline:new Date(val).toISOString()}:{deadline:null};await upsertConfig({...config,...upd});config={...config,...upd};showToast(val?'✅ Deadline saved':'✅ Cleared');applyDeadlineUI();}catch(e){showToast('Save failed');}}
+async function clearDeadline(){document.getElementById('admin-deadline').value='';await saveDeadline();}
+function buildAdminResultsGrid(){const g=document.getElementById('admin-results-grid');if(!g)return;g.innerHTML='';ALL_TEAMS.forEach(t=>{const row=document.createElement('div');const isSet=adminPicks.includes(t.n);row.className='admin-result-row'+(isSet?' set':'');row.innerHTML=`<span class="ar-flag">${t.f}</span><span class="ar-name">${t.n}</span><span class="ar-check">✓</span>`;row.onclick=()=>{if(adminPicks.includes(t.n))adminPicks=adminPicks.filter(p=>p!==t.n);else{if(adminPicks.length>=8){showToast('8 max');return;}adminPicks.push(t.n);}buildAdminResultsGrid();updateAdminLabel();};g.appendChild(row);});updateAdminLabel();}
+function updateAdminLabel(){const el=document.getElementById('admin-results-selected');if(!el)return;el.textContent=adminPicks.length?adminPicks.map(n=>{const t=findTeam(n);return t?t.f:'';}).join(' ')+` (${adminPicks.length}/8)`:'None selected';}
+async function saveResults(){if(adminPicks.length!==8){showToast('Select exactly 8');return;}try{await upsertConfig({...config,results:adminPicks});config={...config,results:[...adminPicks]};showToast('✅ Results saved');renderAll();applyScoreBanner();}catch(e){showToast('Save failed');}}
+
+// ── Deadline UI ───────────────────────────────────────────────────────────────
+let countdownInterval=null;
+function applyDeadlineUI(){
+  const cb=document.getElementById('countdown-banner'),lb=document.getElementById('locked-banner');
+  if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null;}
+  if(!config.deadline){cb.style.display='none';lb.style.display='none';showPickForm();return;}
+  const dl=new Date(config.deadline);
+  if(isLocked()){cb.style.display='none';lb.style.display='';document.getElementById('locked-sub').textContent=`Closed ${fmtTime(config.deadline)}. See leaderboard.`;hidePickForm();switchTab('board');}
+  else{lb.style.display='none';cb.style.display='';function tick(){const diff=dl-new Date();if(diff<=0){applyDeadlineUI();return;}const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);document.getElementById('countdown-time').textContent=h>0?`${h}h ${m}m ${s}s`:m>0?`${m}m ${s}s`:`${s}s`;}tick();countdownInterval=setInterval(tick,1000);}
+}
+function showPickForm(){const el=document.getElementById('pick-inner');if(el)el.style.display='';}
+function hidePickForm(){const el=document.getElementById('pick-inner');if(el)el.style.display='none';}
+function applyScoreBanner(){const b=document.getElementById('score-banner');if(!config.results||config.results.length<8){b.style.display='none';return;}b.style.display='';document.getElementById('score-banner-right').textContent='QF: '+config.results.map(n=>{const t=findTeam(n);return t?t.f:'';}).join(' ');}
+
+// ── Supabase ──────────────────────────────────────────────────────────────────
+async function fetchEntries(){const r=await fetch(`${SUPA_URL}/${TABLE}?select=*&order=created_at.asc`,{headers:HDRS});if(!r.ok)throw new Error(await r.text());return r.json();}
+async function insertEntry(name,picksArr){const r=await fetch(`${SUPA_URL}/${TABLE}`,{method:'POST',headers:{...HDRS,'Prefer':'return=representation'},body:JSON.stringify({name,picks:picksArr})});if(!r.ok)throw new Error(await r.text());return r.json();}
+async function fetchConfig(){try{const r=await fetch(`${SUPA_URL}/${CFG_TABLE}?select=*&limit=1`,{headers:HDRS});if(!r.ok)return config;const rows=await r.json();return rows[0]||config;}catch(e){return config;}}
+async function upsertConfig(data){const r=await fetch(`${SUPA_URL}/${CFG_TABLE}?on_conflict=id`,{method:'POST',headers:{...HDRS,'Prefer':'resolution=merge-duplicates,return=representation'},body:JSON.stringify({id:1,...data})});if(!r.ok)throw new Error(await r.text());return r.json();}
+
+// ── Submit ────────────────────────────────────────────────────────────────────
+document.getElementById('rb-cta').addEventListener('click',async()=>{
+  if(isLocked()){showToast('Submissions closed');return;}
+  const nameEl=document.getElementById('picker-name');const name=nameEl?nameEl.value.trim():'';
+  if(!name||picks.length!==MAX)return;
+  if(entries.find(e=>e.name.toLowerCase()===name.toLowerCase())){showToast(`${name} already has an entry!`);return;}
+  const cta=document.getElementById('rb-cta');cta.disabled=true;cta.textContent='Saving…';
+  try{
+    const[saved]=await insertEntry(name,[...picks]);entries.push(saved);renderAll();
+    const champ=findTeam(picks[0]);
+    document.getElementById('conf-burst').textContent=picks.slice(0,4).map(p=>{const t=findTeam(p);return t?t.f:'';}).join(' ');
+    document.getElementById('conf-heading').textContent=name+', locked in!';
+    document.getElementById('conf-champ').textContent=(champ?champ.f+' ':'')+picks[0]+' to win it all.';
+    document.getElementById('conf-sub').textContent='Your picks are on the board. May the best predictions win.';
+    const savedPicks=[...picks],savedName=name;
+    document.getElementById('conf-share-btn').onclick=()=>openShareModal(savedName,savedPicks);
+    document.getElementById('conf-backdrop').classList.add('show');
+    runBurst(picks.map(p=>{const t=findTeam(p);return t?t.f:'⚽';}));
+    nameEl.value='';picks=[];refresh();
+  }catch(err){showToast('Save failed — try again');console.error(err);}
+  cta.disabled=false;cta.textContent='Lock in my picks 🔒';checkCTA();
+});
+document.getElementById('conf-close').addEventListener('click',()=>{document.getElementById('conf-backdrop').classList.remove('show');switchTab('board');});
+
+
+
+// ── Quiz ─────────────────────────────────────────────────────────────────────
+const QUIZ_DATA = {"questions": [{"id": "food", "question": "How do you feel about the food?", "emoji": "🍽️", "options": [{"text": "I eat to live, not live to eat", "tags": ["germany", "england", "usa", "sweden"]}, {"text": "Food is a religion and I take it very seriously", "tags": ["france", "spain", "portugal", "italy", "morocco", "japan"]}, {"text": "I'll try anything once, especially if it's on fire", "tags": ["argentina", "brazil", "colombia", "mexico", "senegal", "ghana"]}, {"text": "I just want a good steak, ideally the size of my face", "tags": ["uruguay", "argentina", "usa", "canada"]}]}, {"id": "drama", "question": "Your colleague is slightly late to a meeting. You:", "emoji": "😤", "options": [{"text": "Say nothing. Passive-aggressively update the calendar invite", "tags": ["england", "sweden", "denmark", "switzerland", "japan"]}, {"text": "Loudly announce their crime to the entire room", "tags": ["italy", "spain", "argentina", "brazil", "ghana"]}, {"text": "Start the meeting 45 minutes early so they miss the good part", "tags": ["germany", "netherlands", "norway", "austria"]}, {"text": "You were also late. You arrive together", "tags": ["morocco", "senegal", "egypt", "colombia", "mexico", "haiti"]}]}, {"id": "penalty", "question": "You're taking a penalty in the final. Shootout. World Cup. You:", "emoji": "⚽", "options": [{"text": "Chip it down the middle. Pure disrespect", "tags": ["argentina", "france", "portugal", "brazil", "spain"]}, {"text": "Blaze it into Row Z and pretend it was tactical", "tags": ["england", "germany", "usa", "canada", "sweden"]}, {"text": "Ask the goalkeeper which way he's going and go the other way", "tags": ["italy", "croatia", "switzerland", "denmark", "japan"]}, {"text": "Miss, blame the pitch, retire from international football", "tags": ["netherlands", "belgium", "colombia", "uruguay", "ghana"]}]}, {"id": "confidence", "question": "How would you describe your general vibe?", "emoji": "😎", "options": [{"text": "Humble. Quietly excellent. Often underestimated", "tags": ["japan", "morocco", "senegal", "south korea", "croatia", "switzerland"]}, {"text": "Loud, proud, and absolutely convinced I'm right", "tags": ["argentina", "brazil", "france", "italy", "usa", "england"]}, {"text": "Tragic potential. Beautiful football. Zero trophies", "tags": ["netherlands", "colombia", "portugal", "denmark", "norway"]}, {"text": "I simply haven't peaked yet. Watch this space", "tags": ["canada", "norway", "saudi arabia", "australia", "ghana", "usa"]}]}, {"id": "vacation", "question": "Ideal holiday destination?", "emoji": "✈️", "options": [{"text": "Beach, sun, and I don't want to think about anything", "tags": ["brazil", "spain", "portugal", "senegal", "cape verde", "ivory coast"]}, {"text": "City break. Museums. Michelin stars. Organised suffering", "tags": ["france", "germany", "austria", "england", "japan", "switzerland"]}, {"text": "Somewhere no one will find me", "tags": ["norway", "sweden", "denmark", "scotland", "new zealand", "canada"]}, {"text": "I haven't left my city in three years and I'm fine", "tags": ["usa", "mexico", "argentina", "colombia", "iran", "south africa"]}]}, {"id": "winning", "question": "You just won an argument you were definitely wrong about. You:", "emoji": "🏆", "options": [{"text": "Celebrate wildly. The truth was irrelevant", "tags": ["argentina", "brazil", "france", "spain", "colombia", "ghana"]}, {"text": "Accept victory quietly and never mention it again", "tags": ["japan", "south korea", "switzerland", "denmark", "austria"]}, {"text": "Write a 14-page essay explaining why you were actually right", "tags": ["germany", "netherlands", "england", "usa", "norway"]}, {"text": "Immediately start a new argument to keep the energy up", "tags": ["italy", "portugal", "uruguay", "mexico", "senegal", "egypt"]}]}, {"id": "morning", "question": "What time do you wake up?", "emoji": "⏰", "options": [{"text": "5am. Cold shower. I am the main character", "tags": ["germany", "usa", "norway", "japan", "south korea", "austria"]}, {"text": "8am. I am a normal person and proud of it", "tags": ["england", "canada", "australia", "sweden", "denmark", "switzerland"]}, {"text": "I wake up when I wake up. Time is a construct", "tags": ["spain", "portugal", "italy", "brazil", "argentina", "morocco"]}, {"text": "My alarm says 7am. I negotiate with it until 9", "tags": ["france", "colombia", "senegal", "mexico", "ghana", "ivory coast"]}]}, {"id": "crisis", "question": "It's 3am and something's gone very wrong. You:", "emoji": "🚨", "options": [{"text": "Have a fully documented contingency plan for this exact scenario", "tags": ["germany", "japan", "switzerland", "south korea", "austria", "sweden"]}, {"text": "Call your mum. She'll know what to do", "tags": ["italy", "spain", "portugal", "argentina", "brazil", "colombia"]}, {"text": "Convince yourself it's actually fine and go back to sleep", "tags": ["england", "usa", "australia", "canada", "netherlands", "denmark"]}, {"text": "Gather everyone in your contacts and make it a group project", "tags": ["france", "morocco", "senegal", "ghana", "nigeria", "egypt"]}]}, {"id": "joke", "question": "Your sense of humour is best described as:", "emoji": "😂", "options": [{"text": "Dry. Devastating. Often mistaken for sincerity", "tags": ["england", "denmark", "sweden", "scotland", "norway", "netherlands"]}, {"text": "Loud. Physical. Someone probably fell over", "tags": ["brazil", "colombia", "ghana", "nigeria", "mexico", "senegal"]}, {"text": "Technically a joke. Requires footnotes", "tags": ["germany", "japan", "austria", "switzerland", "south korea"]}, {"text": "Extremely charming until suddenly it isn't", "tags": ["france", "italy", "spain", "portugal", "argentina", "uruguay"]}]}, {"id": "rival", "question": "How do you feel about your rivals?", "emoji": "😤", "options": [{"text": "Respectful. We acknowledge their greatness whilst plotting their downfall", "tags": ["spain", "germany", "france", "japan", "switzerland", "croatia"]}, {"text": "They are beneath us. We do not acknowledge them", "tags": ["argentina", "brazil", "italy", "england", "uruguay", "portugal"]}, {"text": "We have no rivals. We have potential future victims", "tags": ["norway", "usa", "canada", "morocco", "senegal", "south korea"]}, {"text": "The real rival was ourselves all along", "tags": ["netherlands", "colombia", "denmark", "ghana", "ivory coast", "egypt"]}]}], "teams": {"argentina": {"name": "Argentina", "flag": "🇦🇷", "tagline": "You're Argentina", "reason": "You're talented, dramatic, and absolutely convinced the universe revolves around you. You've been through genuine heartbreak and come out the other side with a swagger that borders on insufferable. You cry at important moments and you're not sorry about it. Messi would approve."}, "brazil": {"name": "Brazil", "flag": "🇧🇷", "tagline": "You're Brazil", "reason": "You're joyful, creative, and slightly unhinged in the best possible way. You believe football should be beautiful even when it's losing. You have strong opinions about music, food, and whether that was a foul. You will cry. You know this going in."}, "france": {"name": "France", "flag": "🇫🇷", "tagline": "You're France", "reason": "You're effortlessly cool, occasionally insufferable, and somehow always in contention despite appearing to put in minimal effort. You have excellent taste and low tolerance for mediocrity. You also have mysterious internal politics that no one fully understands including you."}, "england": {"name": "England", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "tagline": "You're England", "reason": "You have tremendous potential, a complicated relationship with hope, and a talent for making things needlessly difficult for yourself. You are loveable, occasionally infuriating, and will convince yourself this time is different. It probably isn't. Support them anyway."}, "germany": {"name": "Germany", "flag": "🇩🇪", "tagline": "You're Germany", "reason": "You are efficient, reliable, and mildly terrifying. You've prepared for every scenario including ones that haven't happened yet. You don't understand why other people aren't also prepared. Your humour is extremely good but requires explanation. Perfect German engineering."}, "spain": {"name": "Spain", "flag": "🇪🇸", "tagline": "You're Spain", "reason": "You play the long game. You're patient, technically gifted, and believe that possession is a form of psychological warfare. You eat dinner at 10pm and see nothing wrong with this. Lamine Yamal is your spirit animal: absurdly talented and slightly chaotic."}, "portugal": {"name": "Portugal", "flag": "🇵🇹", "tagline": "You're Portugal", "reason": "You have one absolutely iconic friend that everyone talks about, and you're quietly building something without them that might actually be better. You feel things deeply, express those feelings dramatically, and consider yourself fundamentally misunderstood. Beautiful country though."}, "netherlands": {"name": "Netherlands", "flag": "🇳🇱", "tagline": "You're the Netherlands", "reason": "You are extremely direct, occasionally brutal, and have strong opinions about the correct way to do things. You invented the concept of Total Football and then spent 40 years failing to replicate it. You are frustrating to watch and impossible not to admire."}, "italy": {"name": "Italy", "flag": "🇮🇹", "tagline": "You're Italy", "reason": "Oh wait, Italy didn't qualify. Awkward. But spiritually you're very Italian — you have impeccable style, catastrophic tournament exits, and an absolute conviction that the referee was the problem. You will find a team to support and it won't feel right but the pasta will be good."}, "uruguay": {"name": "Uruguay", "flag": "🇺🇾", "tagline": "You're Uruguay", "reason": "Small nation. Enormous personality. You have punched above your weight so many times you've forgotten what your weight is. You're competitive, slightly aggressive, and deeply proud of a history that other people have largely forgotten. That's fine. You remember."}, "colombia": {"name": "Colombia", "flag": "🇨🇴", "tagline": "You're Colombia", "reason": "You dance when you score. You're expressive, passionate, and James Rodriguez is basically your personality in human form: brilliantly talented and slightly inconsistent. You reached the Copa America final and it didn't go your way. You danced anyway."}, "mexico": {"name": "Mexico", "flag": "🇲🇽", "tagline": "You're Mexico", "reason": "You're playing at home and the atmosphere will be absolutely electric and it STILL might not be enough. You are fiercely passionate, deeply patriotic, and have been burned by the round of 16 so many times you've started calling it home. El Tri forever."}, "usa": {"name": "USA", "flag": "🇺🇸", "tagline": "You're the USA", "reason": "You showed up, you're playing at home, you have Pulisic, and you are cautiously but genuinely excited in a way that is quite endearing. You're new to taking this seriously and that freshness is actually kind of charming. Go on then. This could be the one."}, "canada": {"name": "Canada", "flag": "🇨🇦", "tagline": "You're Canada", "reason": "You are enthusiastic, deeply decent, and have Davies on the left wing which is genuinely terrifying for opponents. You apologise too much but your record in the qualifier was exceptional. You are the nice friend everyone roots for. Please score some goals."}, "japan": {"name": "Japan", "flag": "🇯🇵", "tagline": "You're Japan", "reason": "You are meticulous, high-intensity, and have absolutely no business beating Germany and Spain but you did it anyway. You also cleaned up your dressing room afterwards. You are the most organised team at the tournament and the gap between expectation and delivery is your entire personality."}, "south korea": {"name": "South Korea", "flag": "🇰🇷", "tagline": "You're South Korea", "reason": "Son Heung-min is your entire identity and you're at peace with that. You work incredibly hard, ask for nothing, and somehow keep qualifying. You also once reached a World Cup semi-final at home and nobody talks about it enough. Quietly underrated."}, "morocco": {"name": "Morocco", "flag": "🇲🇦", "tagline": "You're Morocco", "reason": "You reached the 2022 World Cup semi-final and the whole of Africa celebrated with you. You are organised, defiant, and play with a team spirit that makes people emotional. You will defend with your life and hit you on the counter. Bono will save at least one thing that seems impossible."}, "senegal": {"name": "Senegal", "flag": "🇸🇳", "tagline": "You're Senegal", "reason": "You won the Africa Cup of Nations and have Mane and Koulibaly and genuine tournament experience. You are athletic, passionate and the entire continent is behind you. No pressure. Lots of pressure. All the pressure."}, "australia": {"name": "Australia", "flag": "🇦🇺", "tagline": "You're Australia", "reason": "You are cheerful, direct, and absolutely fine with being the underdog. You reached the 2022 quarter-finals and nobody expected it and you celebrated like you'd won the whole thing. That energy. That's the one. Keep it up."}, "croatia": {"name": "Croatia", "flag": "🇭🇷", "tagline": "You're Croatia", "reason": "You are the most consistent overachiever in world football. Modric is 40 and still the most elegant footballer at the tournament. You've been to a World Cup final. You get to extra time in everything. You are technically retired but showing no signs of it."}, "denmark": {"name": "Denmark", "flag": "🇩🇰", "tagline": "You're Denmark", "reason": "You are sensible, well-organised, and genuinely difficult to beat. Eriksen is back and that is remarkable. You are the team that people respect enormously and then slightly forget about. That suits you. You prefer it that way."}, "switzerland": {"name": "Switzerland", "flag": "🇨🇭", "tagline": "You're Switzerland", "reason": "Neutral in theory. Absolutely not neutral in practice. You have knocked out France and Spain in recent tournaments with the energy of someone who has very calmly been planning this for years. You are precise, efficient, and slightly underrated. Much like Swiss watches. And cheese."}, "norway": {"name": "Norway", "flag": "🇳🇴", "tagline": "You're Norway", "reason": "Haaland. That's it. That's the tweet. You have the most lethal striker on the planet and a supporting cast that is fine. The question is whether fine is enough. The answer is: possibly. This could be spectacular or a cautionary tale about over-relying on one person. Worth watching either way."}, "sweden": {"name": "Sweden", "flag": "🇸🇪", "tagline": "You're Sweden", "reason": "You are calm, efficient, and have Isak up front which is a very useful thing to have. You reached a 2018 World Cup quarter-final largely through collective discipline and sheer stubbornness. You don't get excited unnecessarily. That's a feature, not a bug."}, "ghana": {"name": "Ghana", "flag": "🇬🇭", "tagline": "You're Ghana", "reason": "You have Kudus and a dressing room full of energy and you will absolutely beat someone they have no right beating before exiting dramatically. You are unpredictable, exciting, and the highlight reel of your tournament will be excellent regardless of the scorelines."}, "egypt": {"name": "Egypt", "flag": "🇪🇬", "tagline": "You're Egypt", "reason": "You have Salah. You are Salah. The entire team is a delivery mechanism for Salah. When it works it is magnificent. When it doesn't you look around for someone to blame and the answer is almost never Salah. Enjoy the ride."}, "saudi arabia": {"name": "Saudi Arabia", "flag": "🇸🇦", "tagline": "You're Saudi Arabia", "reason": "You beat Argentina in 2022. Argentina. The world champions. You were 2-0 down and you came back and won. That happened. Whatever happens next, that happened. You carry that energy into every game and it makes you genuinely dangerous in a group stage."}, "iran": {"name": "Iran", "flag": "🇮🇷", "tagline": "You're Iran", "reason": "You are organised, physically imposing, and Azmoun is a genuine attacking threat when fit. You have qualified for multiple World Cups through sheer Asian football grit. You will be competitive, frustrating to break down, and you will make at least one very good team very nervous."}, "scotland": {"name": "Scotland", "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "tagline": "You're Scotland", "reason": "First World Cup since 1998 and you are absolutely buzzing about it. Robertson at left back is world-class. McTominay scores for fun at club level. You have no expectation, pure passion, and the best fans in international football. The result is secondary. You're going."}, "austria": {"name": "Austria", "flag": "🇦🇹", "tagline": "You're Austria", "reason": "You are the sensible, slightly underappreciated cousin of Germany. Alaba is exceptional. Sabitzer is very good. You had a strong Euros and you carry that into this with quiet confidence. You would love to beat Germany. Just once. For the vibes."}, "ivory coast": {"name": "Ivory Coast", "flag": "🇨🇮", "tagline": "You're Ivory Coast", "reason": "AFCON 2023 winners on home soil. Haller's comeback from cancer is one of sport's great stories. You have talent, belief, and a team that plays with real heart. The World Cup is a step up but you've earned the right to be here and you intend to show it."}}};
+
+let quizAnswers = {};
+let quizCurrentQ = 0;
+let quizResult = null;
+
+function startQuiz() {
+  quizAnswers = {};
+  quizCurrentQ = 0;
+  document.getElementById('quiz-intro').style.display = 'none';
+  document.getElementById('quiz-result-view').style.display = 'none';
+  document.getElementById('quiz-question-view').style.display = '';
+  showQuizQuestion(0);
+}
+
+function resetQuiz() {
+  quizAnswers = {};
+  quizCurrentQ = 0;
+  quizResult = null;
+  document.getElementById('quiz-intro').style.display = '';
+  document.getElementById('quiz-question-view').style.display = 'none';
+  document.getElementById('quiz-result-view').style.display = 'none';
+}
+
+function showQuizQuestion(idx) {
+  const qs = QUIZ_DATA.questions;
+  const q = qs[idx];
+  const total = qs.length;
+  document.getElementById('quiz-counter').textContent = `Question ${idx+1} of ${total}`;
+  document.getElementById('quiz-progress-fill').style.width = `${Math.round((idx/total)*100)}%`;
+  document.getElementById('quiz-emoji').textContent = q.emoji;
+  document.getElementById('quiz-question').textContent = q.question;
+  const letters = ['A','B','C','D'];
+  const opts = document.getElementById('quiz-options');
+  opts.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    if (quizAnswers[q.id] === i) btn.classList.add('selected');
+    btn.innerHTML = `<div class="quiz-option-letter">${letters[i]}</div><div class="quiz-option-text">${opt.text}</div>`;
+    btn.onclick = () => selectAnswer(q.id, i, opt.tags, idx);
+    opts.appendChild(btn);
+  });
+}
+
+function selectAnswer(qId, optIdx, tags, qIdx) {
+  quizAnswers[qId] = optIdx;
+  // Brief visual flash then advance
+  const opts = document.getElementById('quiz-options');
+  opts.querySelectorAll('.quiz-option').forEach((b,i) => {
+    b.classList.toggle('selected', i === optIdx);
+  });
+  setTimeout(() => {
+    const qs = QUIZ_DATA.questions;
+    if (qIdx < qs.length - 1) {
+      quizCurrentQ = qIdx + 1;
+      showQuizQuestion(quizCurrentQ);
+    } else {
+      showQuizResult();
+    }
+  }, 280);
+}
+
+function showQuizResult() {
+  // Tally scores
+  const scores = {};
+  QUIZ_DATA.questions.forEach(q => {
+    const ansIdx = quizAnswers[q.id];
+    if (ansIdx === undefined) return;
+    const tags = q.options[ansIdx].tags;
+    tags.forEach(t => { scores[t] = (scores[t]||0) + 1; });
+  });
+  // Sort by score
+  const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
+  const topKey = sorted[0]?.[0] || 'england';
+  const teamData = QUIZ_DATA.teams[topKey] || QUIZ_DATA.teams['england'];
+  quizResult = {teamData, sorted};
+
+  document.getElementById('quiz-question-view').style.display = 'none';
+  document.getElementById('quiz-result-view').style.display = '';
+  document.getElementById('quiz-progress-fill').style.width = '100%';
+  document.getElementById('result-flag').textContent = teamData.flag;
+  document.getElementById('result-name').textContent = teamData.name;
+  document.getElementById('result-tagline').textContent = teamData.tagline;
+  document.getElementById('result-reason').textContent = teamData.reason;
+
+  // Runner-ups (next 3)
+  const runners = document.getElementById('result-runners');
+  runners.innerHTML = '';
+  sorted.slice(1,4).forEach(([key]) => {
+    const td = QUIZ_DATA.teams[key];
+    if (!td) return;
+    const chip = document.createElement('div');
+    chip.style.cssText = 'display:flex;align-items:center;gap:6px;background:var(--raised);border:0.5px solid var(--border);border-radius:8px;padding:6px 12px;font-size:13px;color:var(--sub);';
+    chip.innerHTML = `<span style="font-size:20px">${td.flag}</span> ${td.name}`;
+    runners.appendChild(chip);
+  });
+}
+
+function shareQuizResult() {
+  if (!quizResult) return;
+  const {teamData} = quizResult;
+  openShareModal('My WC2026 team: ' + teamData.name, null, teamData);
+}
+
+// Extend openShareModal to handle quiz results
+const _origOpenShareModal = openShareModal;
+function openShareModal(name, picksArr, quizTeam) {
+  if (quizTeam) {
+    // Quiz share card
+    shareTarget = {name, picks: null, quizTeam};
+    generateQuizShareCard(quizTeam);
+  } else {
+    shareTarget = {name, picks: picksArr};
+    generateShareCard(name, picksArr);
+  }
+  document.getElementById('share-modal').classList.add('show');
+}
+
+function generateQuizShareCard(teamData) {
+  const canvas = document.getElementById('share-preview');
+  const ctx = canvas.getContext('2d');
+  const W = 400, H = 400;
+  canvas.width = W; canvas.height = H;
+  // Background
+  ctx.fillStyle = '#080C17'; ctx.fillRect(0,0,W,H);
+  // Gradient accent
+  const g = ctx.createLinearGradient(0,0,W,0);
+  g.addColorStop(0,'#FF3A4A'); g.addColorStop(1,'#CC1E1E');
+  ctx.fillStyle = g; ctx.fillRect(0,0,W,4);
+  // Header
+  ctx.fillStyle = '#111827'; ctx.fillRect(0,4,W,56);
+  ctx.strokeStyle = '#243354'; ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(0,60); ctx.lineTo(W,60); ctx.stroke();
+  // RB badge
+  ctx.fillStyle = '#CC1E1E'; ctx.beginPath(); ctx.arc(30,32,14,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#FFD166'; ctx.font = 'bold 10px serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('RB',30,32);
+  ctx.fillStyle = '#E2EAF8'; ctx.font = '600 13px Inter,sans-serif'; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText('Which team should you support?', 52, 28);
+  ctx.fillStyle = '#6B7FA3'; ctx.font = '500 10px Inter,sans-serif'; ctx.fillText('RBNA IT · WC2026 Fan Finder', 52, 46);
+  // Big flag
+  ctx.font = '100px serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(teamData.flag, W/2, 160);
+  // Team name
+  ctx.fillStyle = '#E2EAF8'; ctx.font = '700 26px Inter,sans-serif'; ctx.textBaseline='top'; ctx.fillText(teamData.name, W/2, 222);
+  // Divider
+  ctx.strokeStyle = '#243354'; ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(40,260); ctx.lineTo(W-40,260); ctx.stroke();
+  // Reason text (wrapped)
+  ctx.fillStyle = '#A8B8D4'; ctx.font = '400 12px Inter,sans-serif'; ctx.textAlign='center';
+  const words = teamData.reason.split(' ');
+  let line = '', y = 274;
+  for (const word of words) {
+    const test = line + (line ? ' ' : '') + word;
+    if (ctx.measureText(test).width > W - 60) {
+      ctx.fillText(line, W/2, y); y += 18; line = word;
+      if (y > 360) { ctx.fillText(line + '...', W/2, y); break; }
+    } else { line = test; }
+  }
+  if (y <= 360 && line) ctx.fillText(line, W/2, y);
+  // Footer
+  ctx.fillStyle = '#111827'; ctx.fillRect(0,H-32,W,32);
+  ctx.fillStyle = '#6B7FA3'; ctx.font = '500 10px Inter,sans-serif';
+  ctx.fillText('rbna.it · WC2026 Fan Finder Quiz', W/2, H-16);
+}
+
+// ── Team data ────────────────────────────────────────────────────────────────
+const TEAM_DATA = {
+  'Argentina':  {rank:1,  color:'#74ACDF', players:['Messi','Di María','Álvarez','Mac Allister','Otamendi'], strength:{attack:95,defense:82,experience:98}},
+  'France':     {rank:2,  color:'#002395', players:['Mbappé','Griezmann','Camavinga','Tchouaméni','Saliba'], strength:{attack:94,defense:88,experience:90}},
+  'Brazil':     {rank:3,  color:'#009C3B', players:['Vinicius Jr','Rodrygo','Endrick','Paquetá','Marquinhos'], strength:{attack:91,defense:80,experience:88}},
+  'England':    {rank:4,  color:'#CF081F', players:['Bellingham','Saka','Kane','Foden','Alexander-Arnold'], strength:{attack:88,defense:82,experience:78}},
+  'Spain':      {rank:5,  color:'#AA151B', players:['Yamal','Pedri','Morata','Rodri','Carvajal'], strength:{attack:87,defense:85,experience:86}},
+  'Portugal':   {rank:6,  color:'#006600', players:['Ronaldo','Bruno','Leão','Vitinha','Rúben Dias'], strength:{attack:86,defense:80,experience:88}},
+  'Netherlands':{rank:7,  color:'#FF6600', players:['Van Dijk','Gakpo','Reijnders','Dumfries','Flekken'], strength:{attack:80,defense:84,experience:80}},
+  'Belgium':    {rank:8,  color:'#F50100', players:['De Bruyne','Lukaku','Tielemans','Vertonghen','Casteels'], strength:{attack:82,defense:76,experience:82}},
+  'Germany':    {rank:12, color:'#000000', players:['Musiala','Wirtz','Havertz','Kroos','Neuer'], strength:{attack:84,defense:81,experience:84}},
+  'Colombia':   {rank:9,  color:'#FCD116', players:['James','Díaz','Arias','Cuesta','Ospina'], strength:{attack:78,defense:72,experience:72}},
+  'Morocco':    {rank:14, color:'#C1272D', players:['En-Nesyri','Ziyech','Amrabat','Hakimi','Bono'], strength:{attack:74,defense:82,experience:74}},
+  'USA':        {rank:16, color:'#002868', players:['Pulisic','Reyna','Musah','Turner','Adams'], strength:{attack:72,defense:68,experience:62}},
+  'Japan':      {rank:18, color:'#BC002D', players:['Mitoma','Doan','Ueda','Endo','Machino'], strength:{attack:74,defense:78,experience:70}},
+  'Uruguay':    {rank:17, color:'#5EB6E4', players:['Valverde','Núñez','Araújo','Bentancur','Rochet'], strength:{attack:76,defense:78,experience:78}},
+  'Mexico':     {rank:15, color:'#006847', players:['Lozano','Vega','Alvarado','Sánchez','Ochoa'], strength:{attack:68,defense:66,experience:72}},
+  'Canada':     {rank:41, color:'#FF0000', players:['Davies','David','Laryea','Borjan','Buchanan'], strength:{attack:70,defense:65,experience:58}},
+  'Ecuador':    {rank:46, color:'#FFD100', players:['Caicedo','Valencia','Plata','Cifuentes','Domínguez'], strength:{attack:66,defense:64,experience:60}},
+  'Senegal':    {rank:19, color:'#00853F', players:['Mané','Sarr','Gueye','Koulibaly','Mendy'], strength:{attack:75,defense:76,experience:74}},
+  'Australia':  {rank:23, color:'#FFD700', players:['Irvine','Duke','Leckie','Ryan','Rowles'], strength:{attack:62,defense:65,experience:64}},
+  'South Korea':{rank:22, color:'#CD2E3A', players:['Son','Hwang','Kim Min-jae','Cho Gue-sung','Lee Kang-in'], strength:{attack:72,defense:70,experience:68}},
+  'Switzerland':{rank:20, color:'#FF0000', players:['Xhaka','Embolo','Shaqiri','Sommer','Akanji'], strength:{attack:70,defense:76,experience:76}},
+  'Croatia':    {rank:10, color:'#FF0000', players:['Modrić','Kovačić','Kramarić','Pašalić','Gvardiol'], strength:{attack:76,defense:78,experience:86}},
+  'Denmark':    {rank:21, color:'#C60C30', players:['Eriksen','Hojlund','Christensen','Andersen','Schmeichel'], strength:{attack:74,defense:78,experience:74}},
+  'Austria':    {rank:25, color:'#ED2939', players:['Alaba','Sabitzer','Gregoritsch','Laimer','Pentz'], strength:{attack:68,defense:70,experience:66}},
+  'Norway':     {rank:28, color:'#EF2B2D', players:['Haaland','Odegaard','Sorloth','Ajer','Nyland'], strength:{attack:82,defense:68,experience:62}},
+  'Turkey':     {rank:29, color:'#E30A17', players:['Calhanoglu','Yildiz','Aktürkoğlu','Demiral','Guler'], strength:{attack:70,defense:68,experience:68}},
+  'Ukraine':    {rank:24, color:'#005BBB', players:['Mudryk','Yaremchuk','Zinchenko','Malinovskyi','Trubin'], strength:{attack:68,defense:64,experience:62}},
+  'Algeria':    {rank:36, color:'#006233', players:['Bennacer','Bensebaini','Slimani','Mahrez','Mandrea'], strength:{attack:64,defense:64,experience:64}},
+  'Ivory Coast':{rank:51, color:'#F77F00', players:['Haller','Zaha','Konaté','Sangaré','Fofana'], strength:{attack:66,defense:64,experience:60}},
+  'Ghana':      {rank:60, color:'#006B3F', players:['Kudus','Ayew','Partey','Djiku','Wollacott'], strength:{attack:62,defense:58,experience:64}},
+  'Paraguay':   {rank:55, color:'#D52B1E', players:['Alonso','Almirón','Enciso','González','Silva'], strength:{attack:58,defense:60,experience:60}},
+  'South Africa':{rank:66,color:'#007A4D', players:['Zwane','Mothiba','Tau','Grobler','Williams'], strength:{attack:52,defense:56,experience:52}},
+  'Qatar':      {rank:37, color:'#8D1B3D', players:['Afif','Al-Haydos','Ahmed','Boudiaf','Salmin'], strength:{attack:54,defense:58,experience:50}},
+  'Saudi Arabia':{rank:56,color:'#006C35', players:['Al-Dawsari','Al-Buraikan','Al-Malki','Al-Shahrani','Al-Owais'], strength:{attack:58,defense:58,experience:56}},
+  'Bosnia-Herz.':{rank:61,color:'#002F6C', players:['Džeko','Pjanić','Kolarov','Šunjić','Šehić'], strength:{attack:62,defense:58,experience:62}},
+  'Iran':       {rank:22, color:'#239F40', players:['Azmoun','Jahanbakhsh','Gholizadeh','Hajsafi','Hosseini'], strength:{attack:62,defense:64,experience:64}},
+  'Czechia':    {rank:34, color:'#D7141A', players:['Schick','Souček','Holeš','Coufal','Staněk'], strength:{attack:66,defense:68,experience:66}},
+  'Sweden':     {rank:32, color:'#006AA7', players:['Isak','Kulusevski','Ekdal','Svensson','Olsen'], strength:{attack:70,defense:66,experience:66}},
+  'Egypt':      {rank:35, color:'#CE1126', players:['Salah','Trezeguet','Elneny','Hegazi','El-Shenawy'], strength:{attack:72,defense:62,experience:64}},
+  'New Zealand':{rank:95, color:'#00247D', players:['Wood','Cacace','Elmir','Waine','Robilliard'], strength:{attack:42,defense:46,experience:40}},
+  'Tunisia':    {rank:30, color:'#E70013', players:['Khazri','Msakni','Jaziri','Meriah','Hassen'], strength:{attack:58,defense:62,experience:60}},
+  'Cape Verde': {rank:31, color:'#003893', players:['Júnior','Andrade','Semedo','Fortes','Mendes'], strength:{attack:56,defense:58,experience:54}},
+  'Scotland':   {rank:39, color:'#003DA5', players:['Robertson','McGinn','McTominay','Adams','Gordon'], strength:{attack:60,defense:64,experience:58}},
+  'Haiti':      {rank:74, color:'#00209F', players:['Nazon','Elis','Jean-Baptiste','Lamothe','Placide'], strength:{attack:44,defense:42,experience:42}},
+  'Iraq':       {rank:63, color:'#CE1126', players:['Mohanad Ali','Amjed','Hasan','Bashar','Jalal'], strength:{attack:50,defense:52,experience:50}},
+  'Jordan':     {rank:71, color:'#007A3D', players:['Baha','Shehade','Al-Rawabdeh','Al-Bawab','Sukar'], strength:{attack:48,defense:50,experience:48}},
+  'Uzbekistan': {rank:72, color:'#1EB53A', players:['Shomurodov','Makhkamov','Alikhanov','Jaloliddinov','Nematov'], strength:{attack:54,defense:54,experience:50}},
+  'Congo DR':   {rank:53, color:'#007FFF', players:['Mbokani','Kakuta','Bongonda','Tissoudali','Ngadeu'], strength:{attack:58,defense:56,experience:54}},
+  'Panama':     {rank:84, color:'#DB2828', players:['Davis','Murillo','Godoy','Quintero','Mosquera'], strength:{attack:46,defense:50,experience:48}},
+  'Curaçao':    {rank:81, color:'#003DA5', players:['Boymans','Aias','Flemming','Marchena','Córdoba'], strength:{attack:44,defense:44,experience:42}},
+};
+
+const BAKED_INTEL = {
+"Argentina": {
+"can_win": "The reigning world champions led by Messi bring unmatched winning mentality and tournament pedigree. Their midfield engine of Mac Allister and Enzo Fernandez is arguably the best in the world right now.",
+"cannot_win": "Messi is 38 and the weight of carrying Argentina's attack still falls heavily on him. Their defensive line is ageing and can be exposed by teams with pace on the counter."
+},
+"France": {
+"can_win": "Mbappe in full flight is the most terrifying attacking weapon in the tournament, and their squad depth with world-class options on the bench is unmatched. Griezmann's creativity and intelligence make France a threat from every position.",
+"cannot_win": "France have imploded in tournaments before despite having the best squad on paper, with dressing-room politics and inconsistency haunting them. If Mbappe has an off tournament there is no clear Plan B."
+},
+"Brazil": {
+"can_win": "Vinicius Jr is in the form of his life and Rodrygo provides the perfect supporting act. Their recent defensive organisation has improved dramatically, making them harder to score against.",
+"cannot_win": "Brazil haven't won a World Cup since 2002 and carry the psychological burden of that drought. Their team relies heavily on individual brilliance rather than a defined system, which can unravel against well-organised opposition."
+},
+"England": {
+"can_win": "England's golden generation is at peak age simultaneously with Bellingham, Saka, Foden and Kane all 24-28 and hungry for a first major trophy. The squad carries genuine belief they can go all the way this time.",
+"cannot_win": "England remain prone to bottling it in penalty shootouts and big knockout moments. Their reliance on Kane as the lone striker means one bad game from him and the entire attack stalls."
+},
+"Spain": {
+"can_win": "Lamine Yamal at 18 is already the most exciting winger in world football and Spain's possession-based DNA can suffocate any team. Their 2024 Euros victory proved this generation has tournament temperament to match the talent.",
+"cannot_win": "Spain can be too patient in attack, recycling possession without the killer instinct to finish off stubborn low-block defences. Losing Rodri to injury or fatigue in a long tournament would expose the backline significantly."
+},
+"Portugal": {
+"can_win": "Bruno Fernandes has evolved into a genuine world-class leader and Leao provides the pace and directness Portugal have historically lacked. Their squad is deeper than ever and no longer entirely dependent on one man.",
+"cannot_win": "Ronaldo at 41 is still demanding a starting role and the tactical compromises required to accommodate him can unbalance the team. Portugal have a history of underachieving in tournaments relative to their talent level."
+},
+"Netherlands": {
+"can_win": "Van Dijk is arguably the best defensive leader in world football and the Dutch are incredibly difficult to score against when organised. Gakpo and Reijnders provide creativity to hurt any team at the highest level.",
+"cannot_win": "The Netherlands lack a world-class striker to consistently convert the chances they create. Internal divisions and tactical identity crises have plagued Dutch squads in major tournaments before."
+},
+"Germany": {
+"can_win": "Florian Wirtz and Jamal Musiala together form the most exciting young midfield duo at the tournament, both capable of match-winning moments of brilliance. Germany thrive on tournament energy and have reinvigorated their national identity.",
+"cannot_win": "Germany's defensive fragility has been ruthlessly exposed in recent tournaments and they concede too easily under sustained pressure. The transition from the old guard to the new generation is still not fully complete."
+},
+"Belgium": {
+"can_win": "De Bruyne at his best is still the finest playmaker in the game and can unlock any defence in the world on his day. Lukaku's experience and movement in the box gives them a reliable threat in the final third.",
+"cannot_win": "This is genuinely the last chance for Belgium's golden generation and the pressure of that reality creates its own problems. Key players are ageing and their best days at club level may be behind them."
+},
+"Colombia": {
+"can_win": "James Rodriguez brings elite-level vision and playmaking that can pull apart any midfield structure, and Luis Diaz's pace on the left flank is relentless. Their Copa America 2024 final run showed they belong among the elite.",
+"cannot_win": "Colombia's defensive structure is not robust enough to withstand sustained pressure from the top seeds. They depend heavily on James being fit and in form to provide a creative outlet."
+},
+"Morocco": {
+"can_win": "The 2022 semi-final run proved Morocco can organise defensively and then hurt teams on the counter-attack with devastating efficiency. Hakimi is world-class going forward and their team spirit has become a genuine tactical identity.",
+"cannot_win": "Morocco lack the attacking quality to consistently break down deep-lying defences. The further they go, the more teams study their defensive setup and work out how to neutralise the counter."
+},
+"USA": {
+"can_win": "Pulisic is a Champions League winner whose form for AC Milan has been exceptional and he brings that quality to the international stage. Playing on home soil in front of enormous crowds gives the USA a psychological edge that shouldn't be underestimated.",
+"cannot_win": "USA lack the international tournament pedigree and knockout experience to handle deep pressure in a World Cup. Outside Pulisic there is a significant drop-off in quality and teams will simply target him out of the game."
+},
+"Japan": {
+"can_win": "Japan's high-pressing system and exceptional team cohesion make them exhausting to play against, and they proved in 2022 they can beat elite nations. Mitoma and Doan bring genuine club-level quality onto the international stage.",
+"cannot_win": "Japan have historically struggled to convert strong group-stage performances into deep knockout runs. Physical battles against more powerful European sides in knockout rounds tend to favour the opposition."
+},
+"Uruguay": {
+"can_win": "Valverde is one of the most complete midfielders in the world and can single-handedly dominate games with his Real Madrid form. Uruguay's defensive mentality under tournament pressure makes them incredibly difficult to beat.",
+"cannot_win": "Uruguay's attacking play lacks the creativity and pace to consistently hurt elite defensive sides. Disciplinary issues have undermined Uruguay in key moments of past tournaments and that remains a real risk."
+},
+"Mexico": {
+"can_win": "Mexico are energised by playing on home soil and the Azteca atmosphere will be one of the tournament's great forces. Lozano's pace and Vega's technical quality give them the tools to hurt teams on the counter-attack.",
+"cannot_win": "Mexico have been knocked out at the round of 16 in seven consecutive World Cups. Their squad lacks the star power to genuinely hurt the best sides and the psychological barrier is now as much a problem as the tactical one."
+},
+"Canada": {
+"can_win": "Alphonso Davies is a generational talent who can embarrass any right back in the world, and Jonathan David's goalscoring record at Lille is elite. Canada's physicality and directness make them a genuinely uncomfortable opponent.",
+"cannot_win": "Canada have never won a knockout game at a World Cup and lack the tournament experience to manage big moments. Their system is heavily reliant on Davies getting forward and neutralising him removes the main creative threat."
+},
+"Ecuador": {
+"can_win": "Caicedo has established himself as one of the best defensive midfielders in the Premier League and provides a perfect platform to build from. Valencia's physicality gives them a reliable outlet and they believe in themselves after their qualification campaign.",
+"cannot_win": "Ecuador lack the technical quality in behind Caicedo to exploit the platform he creates. Their attacking options outside Valencia are limited and they would struggle to unlock a well-organised backline consistently."
+},
+"Senegal": {
+"can_win": "Mane provides world-class quality in attack and Koulibaly's leadership at the back gives Senegal a defensive foundation that proved its worth at AFCON. The experience of winning major tournaments gives them belief that can carry them far.",
+"cannot_win": "Mane has struggled with injuries and inconsistency at club level and cannot be guaranteed to replicate his best form across six games. Creative depth beyond Mane is limited and teams who neutralise him find them predictable."
+},
+"Australia": {
+"can_win": "Australia's 2022 World Cup quarter-final showed they can punch well above their weight when unified around a clear pressing system. Mat Ryan's experience in goal and Irvine's midfield energy give them an organisational base that frustrates better teams.",
+"cannot_win": "Australia lack the individual quality at the top end to consistently threaten elite defences. Their strength is collective and can be broken down by technically superior sides who figure out the system."
+},
+"South Korea": {
+"can_win": "Son Heung-min is still among the best wide forwards in the world and his delivery and finishing can open any game. Korea's high-energy pressing style creates chaos for unprepared sides and they have the discipline to execute it for 90 minutes.",
+"cannot_win": "South Korea are heavily dependent on Son and when he is marked out of a game the team can be profoundly pedestrian. Their central attacking options are limited and they struggle to create quality chances against deep defences."
+},
+"Switzerland": {
+"can_win": "Switzerland are the ultimate tournament overperformers with collective discipline and Xhaka's midfield control making them genuinely difficult to beat. They have knocked out France and Spain in recent tournaments, proving they belong at the highest level.",
+"cannot_win": "Switzerland lack the attacking firepower to beat elite sides over 90 minutes. They tend to grind out results rather than impose themselves and can be one-dimensional when a goal is urgently needed."
+},
+"Croatia": {
+"can_win": "Modric is arguably the greatest midfielder of his generation and even at 40 his vision and tournament intelligence are unmatched. Croatia have reached a World Cup final and a semi-final in the last two tournaments and know how to win knockout games.",
+"cannot_win": "Modric is 40 years old and the entire creative structure of the team depends on him being fit and available for every game. Croatia's squad is ageing across the board and lacks the physical intensity of younger nations."
+},
+"Denmark": {
+"can_win": "Eriksen's return to form gives Denmark a genuine creative heartbeat and Hojlund's physical dominance up front is a real threat at set pieces. Denmark are tactically disciplined, well-organised and capable of grinding through to a semi-final.",
+"cannot_win": "Denmark lack the star power or attacking creativity to beat the very best sides over 90 minutes of open play. Their World Cup history has been underwhelming relative to the quality of their recent squads."
+},
+"Austria": {
+"can_win": "Alaba's world-class quality from left back and Sabitzer's energy in midfield give Austria a platform to compete with anyone on a good day. Their Euros campaign showed they can be tactically astute and dangerous from set pieces.",
+"cannot_win": "Austria have been eliminated in the group stage in their last three major tournaments and carry the weight of consistent underperformance. Their attack lacks a genuine killer instinct in front of goal at the highest level."
+},
+"Norway": {
+"can_win": "Haaland is the most prolific striker in the world right now and his physical dominance, movement and finishing are impossible to fully account for defensively. If Odegaard can control the tempo, Norway have the potential to pull off the upset of the tournament.",
+"cannot_win": "Norway's qualification campaign was inconsistent and the team beyond Haaland lacks the collective quality to dominate games at World Cup level. Opponents will overload the midfield, deny Haaland service and dare a limited supporting cast to hurt them."
+},
+"Turkey": {
+"can_win": "Guler is one of the most technically gifted young players in European football and Calhanoglu's midfield control gives Turkey a classy base to build from. Their Euros 2024 quarter-final run showed they can handle the pressure of knockout football.",
+"cannot_win": "Turkey's defensive record is fragile and they concede too many goals to go deep in a tough World Cup draw. Outside their best two or three players the squad depth drops off sharply over a long tournament."
+},
+"Ukraine": {
+"can_win": "Mudryk's pace and directness in behind opposition defences is one of the hardest matchups in the tournament to plan for. Ukrainian players carry extraordinary emotional motivation that can elevate their performances beyond their technical level.",
+"cannot_win": "Ukraine's squad is depleted by ongoing conflict and several key players have had disrupted club careers with inconsistent preparation. They lack the defensive solidity to go deep in a World Cup without giving up costly goals."
+},
+"Algeria": {
+"can_win": "Mahrez's unpredictability and Bennacer's midfield craft give Algeria the technical quality to hurt any team in their group. Their 2019 AFCON winning mentality provides a tournament blueprint the current squad can draw on.",
+"cannot_win": "Algeria's 2022 World Cup qualifying failure showed vulnerability under pressure and they have not replicated that AFCON performance at global level. Their squad has quality but lacks the collective depth to sustain six high-intensity games."
+},
+"Ivory Coast": {
+"can_win": "Haller's return from serious illness is one of football's great stories and his aerial ability and composure give Ivory Coast a focal point defenders respect. Their AFCON 2023 victory proved they can win tournaments when the pieces fall together.",
+"cannot_win": "Ivory Coast's performances outside the continent have been underwhelming and the step up from AFCON to World Cup level is significant. Their defensive structure is inconsistent and can be undone by technically superior attacking teams."
+},
+"Ghana": {
+"can_win": "Kudus is one of the most exciting all-action midfielders in the Premier League and capable of decisive moments in big games. Ghana have the competitive fire and unpredictability to cause upsets against complacent sides.",
+"cannot_win": "Ghana have failed to progress beyond the group stage in three of their four World Cup appearances and recent form has been inconsistent. Their defensive organisation is not reliable enough to withstand sustained pressure from top European sides."
+},
+"Paraguay": {
+"can_win": "Almiron's Premier League experience and direct running give Paraguay a weapon that can exploit spaces on the counter-attack. Their South American toughness and defensive discipline make them uncomfortable opponents over 90 minutes.",
+"cannot_win": "Paraguay have not qualified for a World Cup since 2010 and the squad lacks the quality to progress beyond the group stage. Their attack is too reliant on individual moments rather than a coherent and repeatable system."
+},
+"South Africa": {
+"can_win": "South Africa will benefit from their AFCON experience and Tau's technical quality makes them capable of troubling anyone on a given day. The crowd factor from South Africa's large diaspora in North America could provide a real lift.",
+"cannot_win": "South Africa have never won a single match at a World Cup away from their 2010 home tournament. Their squad lacks the depth and quality to sustain six games against international opposition at this level."
+},
+"Qatar": {
+"can_win": "Qatar have been specifically developed for major tournament football over 20 years and Afif's technique and set-piece delivery gives them a genuine threat. They have grown in experience since hosting the 2022 tournament and are better prepared.",
+"cannot_win": "Qatar were the worst-performing host nation in World Cup history in 2022 and haven't bridged the quality gap sufficiently. They lack the physical intensity and defensive robustness to compete with top international opposition."
+},
+"Saudi Arabia": {
+"can_win": "Saudi Arabia's shock win over Argentina in 2022 proved they can execute a game plan perfectly and compete on the biggest stage. Their domestic league has raised the competitive environment for the national squad significantly.",
+"cannot_win": "Saudi Arabia's famous Messi win was the high-water mark of a tournament where they were ultimately eliminated in the group stage. They rely on defensive organisation and a moment of brilliance which is not sustainable across six games."
+},
+"Bosnia-Herz.": {
+"can_win": "Dzeko is a Champions League-winning striker whose technical quality and football intelligence remain elite even late in his career. Bosnia have enough quality across the squad to be competitive in their group and spring a surprise.",
+"cannot_win": "Bosnia have been eliminated in the group stage in their only previous World Cup and their defensive structure has historically been their undoing. The squad lacks organisational solidity at the back to compensate when Dzeko has an off day."
+},
+"Iran": {
+"can_win": "Iran are one of the best-organised defensive teams in Asia and their collective discipline makes them genuinely difficult to score against. Azmoun's quality up front gives them an outlet capable of the tactical upset that defines group-stage football.",
+"cannot_win": "Iran's attacking quality is too limited to sustain a challenge beyond the group stage against defensively organised sides. Their best results in World Cups have come through defensive resilience alone, which can only take you so far."
+},
+"Czechia": {
+"can_win": "Schick is one of the best strikers in the Bundesliga and his technical quality gives Czechia an edge in front of goal. Soucek's physicality and aerial dominance from midfield gives them a genuine set-piece threat in every game.",
+"cannot_win": "Czechia have never progressed beyond the quarter-finals in their World Cup history as an independent nation. Their squad lacks consistent quality beyond a handful of key players and the depth becomes critical over a long tournament."
+},
+"Sweden": {
+"can_win": "Isak has established himself as one of the Premier League's best strikers and Kulusevski provides the creativity to supplement him effectively. Sweden have a strong organisational structure and are difficult to break down when defending with shape.",
+"cannot_win": "Sweden's last genuine deep World Cup run was 2018 and they haven't demonstrated the collective quality to replicate that since. They can be too conservative in attack and rely heavily on Isak being available throughout the tournament."
+},
+"Egypt": {
+"can_win": "Mohamed Salah is still one of the best players in the world and capable of moments of individual brilliance that can decide any game. Egypt's AFCON experience gives them a tactical template for navigating difficult knockout matches.",
+"cannot_win": "Egypt's tactical setup tends to make them too passive, waiting for Salah to produce magic rather than building structured pressure. Their World Cup record is poor and they have struggled to replicate AFCON form at the global level."
+},
+"New Zealand": {
+"can_win": "New Zealand's physical directness and set-piece aggression can unsettle technically superior sides who don't take them seriously. Their underdog status removes pressure and allows them to play with freedom and no expectation.",
+"cannot_win": "New Zealand have never won a group-stage game at a World Cup and their squad quality is well below the standard required to change that. They will be competitive but ultimately lack the technical quality to advance beyond the group stage."
+},
+"Tunisia": {
+"can_win": "Tunisia's defensive discipline is among the strongest in the African contingent and their experienced squad knows how to hold shape against powerful opposition. They have shown in past tournaments they can hold stronger sides to draws on a tactical day.",
+"cannot_win": "Tunisia's attacking output is too limited to win the three games needed to escape the group stage against quality opposition. Their World Cup record shows they have peaked at single group-stage victories and going further requires a major leap."
+},
+"Cape Verde": {
+"can_win": "Cape Verde are AFCON dark horses with genuine team spirit and an aggressive pressing style that can disrupt technically superior sides. Their recent form in African competition shows they are improving rapidly and ready to make noise.",
+"cannot_win": "Cape Verde have never played in a World Cup before and the step up from African football to this level is enormous. They lack the individual quality and tournament experience to be realistic contenders beyond the group stage."
+},
+"Scotland": {
+"can_win": "Robertson and McTominay give Scotland genuine Premier League quality in key areas and their press-based system can cause problems for unprepared sides. They won't be intimidated by any opponent and will compete hard for every point.",
+"cannot_win": "Scotland have not qualified for a World Cup since 1998 and return with significant expectation they are unlikely to meet. Their attacking output at international level remains stubbornly below the level required to win knockout games."
+},
+"Haiti": {
+"can_win": "Haiti qualified for this stage through sheer determination and will approach the tournament with freedom and nothing to lose. Upsets happen in group stages and a focused energetic performance could catch a complacent opponent completely cold.",
+"cannot_win": "Haiti lack the squad depth, tactical organisation and individual quality to be competitive at World Cup level against even average international sides. It would be a significant surprise if they won a single group-stage game."
+},
+"Iraq": {
+"can_win": "Iraq have shown improvement in Asian qualifiers and their physical direct style can pose problems for more technical opponents not expecting a fight. Their large diaspora following in North America could provide an unexpected atmosphere boost.",
+"cannot_win": "Iraq have been eliminated in the group stage in every World Cup they have appeared in and their squad quality has not reached the level required to change that pattern. Their defensive organisation breaks down under sustained pressure from quality attacking sides."
+},
+"Jordan": {
+"can_win": "Jordan's run to the 2023 Asian Cup final showed they are capable of beating quality opposition in knockout football when everything clicks. Their disciplined defensive shape and quick transitions give them a fighting chance of earning group-stage points.",
+"cannot_win": "Jordan have no previous World Cup experience and making the jump from Asian Cup finalists to competing globally is an enormous step. Their attacking quality is limited and they would struggle to score the goals required to advance beyond the group."
+},
+"Uzbekistan": {
+"can_win": "Uzbekistan are one of Asian football's most improved nations and Shomurodov's technical quality at club level brings genuine attacking threat. Their qualification route was impressive and they have the collective organisation to be competitive.",
+"cannot_win": "Uzbekistan make their World Cup debut facing a massive step up in quality against established international programmes. Their lack of experience at this level across the squad will show under the pressure of elimination football."
+},
+"Congo DR": {
+"can_win": "Congo DR have produced exceptional talent over the years and Ngadeu's defensive quality at club level gives them a solid foundation to build from. Their physical athleticism and direct style can unsettle technically superior sides who underestimate them.",
+"cannot_win": "Congo DR have limited World Cup experience and their squad lacks the consistency and depth required to sustain a challenge at this level. Their qualifying campaign showed vulnerability against organised opposition."
+},
+"Panama": {
+"can_win": "Panama's 2018 World Cup debut showed they could be competitive and their physical style makes them difficult to play against. A well-organised defensive block combined with set-piece threat means they can earn points against distracted opponents.",
+"cannot_win": "Panama were eliminated in the group stage without a win or a goal in their only previous World Cup appearance. They lack the technical quality across the squad to compete with even mid-tier international sides consistently."
+},
+"Curaçao": {
+"can_win": "Curacao's roster is filled with European-based players who bring club-level quality and tactical sophistication to the national team. Their first World Cup appearance gives them the freedom to attack without fear of failure.",
+"cannot_win": "Curacao are making their World Cup debut and face a significant quality gap against established international teams. Their group-stage opponents will have considerably more experience of high-pressure tournament football."
+}
+};
+
+let teamIntelCache = {};
+let teamCardExpanded = null;
+
+function buildTeamCards() {
+  const grid = document.getElementById('team-cards-grid');
+  grid.innerHTML = '';
+  Object.entries(GROUPS).forEach(([grp, teams]) => {
+    teams.forEach(t => {
+      const td = TEAM_DATA[t.n] || {rank:'—', color:'#444', players:[], strength:{attack:50,defense:50,experience:50}};
+      const card = document.createElement('div');
+      card.className = 'team-hero-card';
+      card.dataset.team = t.n;
+      card.dataset.group = grp;
+      // Gradient bar using team color
+      const r = parseInt(td.color.slice(1,3),16), g2 = parseInt(td.color.slice(3,5),16), b = parseInt(td.color.slice(5,7),16);
+      const starPlayer = td.players[0] || '';
+      const otherPlayers = td.players.slice(1);
+      card.innerHTML = `
+        <div class="thc-flag-bar" style="background:linear-gradient(90deg,${td.color},${td.color}88)"></div>
+        <div class="thc-body">
+          <div class="thc-top">
+            <div class="thc-flag-emoji">${t.f}</div>
+            <div class="thc-info">
+              <div class="thc-name">${t.n}</div>
+              <div class="thc-group">Group ${grp}</div>
+              <div class="thc-ranking"><span class="thc-ranking-val">#${td.rank}</span><span class="thc-ranking-lbl">FIFA ranking</span></div>
+            </div>
+          </div>
+          <div class="thc-players">
+            <div class="thc-players-lbl">Key players</div>
+            <div class="thc-player-chips">
+              ${starPlayer ? `<span class="thc-player star">⭐ ${starPlayer}</span>` : ''}
+              ${otherPlayers.map(p => `<span class="thc-player">${p}</span>`).join('')}
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            ${Object.entries(td.strength).map(([k,v]) => `
+              <div class="thc-strength-row">
+                <div class="thc-strength-lbl">${k.charAt(0).toUpperCase()+k.slice(1)}</div>
+                <div class="thc-strength-bg"><div class="thc-strength-fill" style="width:${v}%"></div></div>
+                <div class="thc-strength-val">${v}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+        <button class="thc-expand-btn" onclick="toggleTeamIntel(event,'${t.n}')">
+          <span class="thc-expand-arrow">▼</span> AI Scouting Report
+        </button>
+        <div class="thc-intel" id="intel-${t.n.replace(/[\s.']/g,'_')}">
+          <div class="thc-intel-loading">Tap to load AI analysis…</div>
+        </div>`;
+      grid.appendChild(card);
+    });
+  });
+}
+
+function toggleTeamIntel(e, teamName) {
+  e.stopPropagation();
+  const safeId = teamName.replace(/[\s\.']/g,'_');
+  const panel = document.getElementById('intel-' + safeId);
+  const card = panel.closest('.team-hero-card');
+  const btn = card.querySelector('.thc-expand-btn');
+  const arrow = btn.querySelector('.thc-expand-arrow');
+  const isOpen = panel.classList.contains('show');
+  // Close all others
+  document.querySelectorAll('.thc-intel.show').forEach(p => {
+    p.classList.remove('show');
+    const b = p.closest('.team-hero-card').querySelector('.thc-expand-arrow');
+    if(b) b.textContent = '▼';
+  });
+  if (isOpen) { card.classList.remove('expanded'); return; }
+  panel.classList.add('show');
+  card.classList.add('expanded');
+  arrow.textContent = '▲';
+  if (teamIntelCache[teamName]) { renderTeamIntel(panel, teamIntelCache[teamName]); return; }
+  const baked = BAKED_INTEL[teamName];
+  if (baked) {
+    teamIntelCache[teamName] = baked;
+    renderTeamIntel(panel, baked);
+  } else {
+    panel.innerHTML = '<div class="thc-intel-loading" style="color:var(--sub)">No report available for this team.</div>';
+  }
+}
+
+function renderTeamIntel(panel, data) {
+  panel.innerHTML = `
+    <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px">AI Scouting Report</div>
+    <div class="thc-pros-cons">
+      <div class="thc-pro">
+        <div class="thc-pc-title">✓ Why they can win</div>
+        <div class="thc-pc-text">${data.can_win || '—'}</div>
+      </div>
+      <div class="thc-con">
+        <div class="thc-pc-title">✗ Why they can't</div>
+        <div class="thc-pc-text">${data.cannot_win || '—'}</div>
+      </div>
+    </div>`;
+}
+
+function filterTeamCards(query) {
+  const q = query.toLowerCase();
+  const grpFilter = document.getElementById('group-filter').value;
+  document.querySelectorAll('.team-hero-card').forEach(card => {
+    const name = (card.dataset.team || '').toLowerCase();
+    const grp = card.dataset.group || '';
+    const matchName = !q || name.includes(q);
+    const matchGrp = !grpFilter || grp === grpFilter;
+    card.style.display = matchName && matchGrp ? '' : 'none';
+  });
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function switchTab(tab){
+  ['today','groups','pick','board','heat','teams','quiz'].forEach(t=>{
+    document.getElementById('tab-'+t).className='tab'+(t===tab?' active':'');
+    document.getElementById('view-'+t).style.display=t===tab?'':'none';
+  });
+  if(tab==='pick'){showPickForm();buildSlots();buildGroups();}
+  if(tab==='teams'){if(!document.querySelector('.team-hero-card'))buildTeamCards();}
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+(async function init(){
+  buildSlots();buildGroups();renderAll();showPickForm();
+  // Load everything in parallel
+  const[matchData,standingsData,cfg,ents]=await Promise.allSettled([
+    fetchWCMatches(),fetchWCStandings(),fetchConfig(),fetchEntries()
+  ]);
+  liveMatches=matchData.status==='fulfilled'?matchData.value:[];
+  allStandings=standingsData.status==='fulfilled'?standingsData.value:[];
+  if(cfg.status==='fulfilled'&&cfg.value){config={deadline:cfg.value.deadline||null,results:cfg.value.results||[]};}
+  if(ents.status==='fulfilled'){entries=ents.value;}
+  buildTicker(liveMatches);renderTodayFixtures(liveMatches);renderTournamentOverview(liveMatches);renderStandings(allStandings);
+  renderAll();applyDeadlineUI();applyScoreBanner();
+  // Refresh live data every 60 seconds
+  setInterval(async()=>{
+    const[m,s]=await Promise.allSettled([fetchWCMatches(),fetchWCStandings()]);
+    if(m.status==='fulfilled'){liveMatches=m.value;buildTicker(liveMatches);renderTodayFixtures(liveMatches);renderTournamentOverview(liveMatches);}
+    if(s.status==='fulfilled'){allStandings=s.value;renderStandings(allStandings);}
+  },60000);
 })();
 </script>
 </body>
